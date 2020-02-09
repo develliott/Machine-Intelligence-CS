@@ -5,27 +5,45 @@ using System.Text;
 
 namespace CS_GA
 {
-    public class StudentPreferenceData
+    public class StudentPreferenceData<T>
     {
+        private readonly int _maxRowIndex;
+        private readonly int _maxColumnIndex;
+        private readonly dynamic[,] _csvFileData;
+        private readonly Func<string, T> _converterFunc;
+
         // Rows then Columns for index size.
-        private readonly int[,] _studentPreference;
+        private readonly T[,] _studentPreference;
 
-        public StudentPreferenceData(int[,] studentPreference)
+        public StudentPreferenceData(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData, Func<string, T> converterFunc)
         {
-            _studentPreference = studentPreference;
+            _maxRowIndex = maxRowIndex;
+            _maxColumnIndex = maxColumnIndex;
+            _csvFileData = csvFileData;
+            _converterFunc = converterFunc;
+            _studentPreference = new T[maxRowIndex, maxColumnIndex];
+
+            SetStudentPreference();
         }
 
-        public void SetStudentPreference(int studentIndex, int timeslotIndex, int preferenceScore )
+        private void SetStudentPreference()
         {
-            _studentPreference[studentIndex, timeslotIndex] = preferenceScore;
+            for (var currentRowIndex = 0; currentRowIndex < _maxRowIndex; currentRowIndex++)
+            {
+                for (int currentColumnIndex = 0; currentColumnIndex < _maxColumnIndex; currentColumnIndex++)
+                {
+                    _studentPreference[currentRowIndex, currentColumnIndex] =
+                        _converterFunc(_csvFileData[currentRowIndex, currentColumnIndex]);
+                }
+            }
         }
 
-        public int GetStudentPreference(int studentIndex, int timeslotIndex)
+        public T GetStudentPreference(int studentIndex, int timeslotIndex)
         {
             return _studentPreference[studentIndex, timeslotIndex];
         }
 
-        public int[] GetStudentData(int studentIndex)
+        public T[] GetStudentData(int studentIndex)
         {
             return Enumerable.Range(0, _studentPreference.GetLength(1))
                 .Select(x => _studentPreference[studentIndex, x])

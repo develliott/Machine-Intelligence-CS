@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace CS_GA
@@ -27,6 +28,11 @@ namespace CS_GA
             SetCsvFileData();
         }
 
+        public T[,] GetCsvFileData()
+        {
+            return _csvFileData;
+        }
+
         /// <summary>
         /// Populates the two dimensional array with the CSV file values.
         /// </summary>
@@ -42,7 +48,7 @@ namespace CS_GA
 
                 while (!fileReader.EndOfStream)
                 {
-                    var fileLine = fileReader.ReadLine();
+                    var fileLine = fileReader.ReadLine() ?? throw new ArgumentNullException("fileReader.ReadLine()");
 
                     var offset = _ignoreFirstColumn ? 1 : 0;
                     var fileLineElements = fileLine.Split(_delimiter).Skip(offset).ToArray();
@@ -80,7 +86,7 @@ namespace CS_GA
 
                 while (!fileReader.EndOfStream)
                 {
-                    var fileLine = fileReader.ReadLine();
+                    var fileLine = fileReader.ReadLine() ?? throw new ArgumentNullException("fileReader.ReadLine()");
 
                     // Only perform calculation once.
                     if (maxRowIndex == 0)
