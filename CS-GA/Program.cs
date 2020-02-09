@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -14,12 +15,15 @@ namespace CS_GA
             // TODO: Dynamically set data array length
             StudentPreferenceData studentPreferenceData = new StudentPreferenceData(new int[7,14]);
 
+            Dictionary<string, int> _studentNameToIndexMapping = new Dictionary<string, int>();
+
             using (var reader = new StreamReader("F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv"))
             {
+                int currentRowIndex = 0;
+
                 if (ignoreHeader)
                     reader.ReadLine();
 
-                int currentRowIndex = 0;
                 while (!reader.EndOfStream)
                 {
                     // New Line of Student Data
@@ -28,16 +32,18 @@ namespace CS_GA
                     if (basicFileLine != null)
                     {
                         // Split the line by commands to retrieve a list of strings 
-                        var itemsInFileLine = basicFileLine.Split(",");
+                        var itemsInFileLine = basicFileLine.Split(",").ToList();
 
-                        // TODO: Change column index, and deal with the Student Name
-                        for (int currentColumnIndex = 1; currentColumnIndex < itemsInFileLine.Length; currentColumnIndex++)
+                        // Read the first element as Student Name and then remove it
+                        _studentNameToIndexMapping.Add(itemsInFileLine[0], currentRowIndex);
+                        itemsInFileLine.Remove(itemsInFileLine[0]);
+
+                        for (int currentColumnIndex = 0; currentColumnIndex < itemsInFileLine.Count; currentColumnIndex++)
                         {
                             string preferenceAsLowerCase = itemsInFileLine[currentColumnIndex].ToLower();
                             int preferenceScore = ConvertStringDataToPreferenceScore(preferenceAsLowerCase);
 
-                            //TODO: Change 'currentColumnIndex - 1'. It was done to get around the student name column causing an index out of bounds exception
-                            studentPreferenceData.SetStudentPreference(currentRowIndex, currentColumnIndex - 1, preferenceScore);
+                            studentPreferenceData.SetStudentPreference(currentRowIndex, currentColumnIndex, preferenceScore);
                         }
                     }
                     else
@@ -48,12 +54,6 @@ namespace CS_GA
                     currentRowIndex++;
                 }
             }
-
-            var studentData = studentPreferenceData.GetStudentData(6).ToList();
-            studentData.ForEach(data => Console.WriteLine(data));
-            
-
-            Console.ReadLine();
         }
 
         static int ConvertStringDataToPreferenceScore(string data)
