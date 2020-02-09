@@ -10,7 +10,9 @@ namespace CS_GA
         private const string _filePath = "F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv";
         static void Main(string[] args)
         {
-            CsvHelper<int> csvHelper = new CsvHelper<int>(_filePath, ",",true, true);
+            CsvHelper<string> csvHelper = new CsvHelper<string>(_filePath, ",",true, true);
+
+            var t = csvHelper.GetValue(6, 5);
         }
 
         public void t() { 
