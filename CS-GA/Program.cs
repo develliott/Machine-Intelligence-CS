@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CS_GA.Genetic_Algorithm;
 
 namespace CS_GA
 {
@@ -12,8 +13,9 @@ namespace CS_GA
         {
             CsvHelper<string> csvHelper = new CsvHelper<string>(_filePath, ",",true, true);
 
-            StudentPreferenceData<int> studentPreferenceData = new StudentPreferenceData<int>(csvHelper.MaxRowIndex, csvHelper.MaxColumnIndex, csvHelper.GetCsvFileData(), ConvertStringDataToPreferenceScore);
+            // StudentPreferenceData<int> studentPreferenceData = new StudentPreferenceData<int>(csvHelper.MaxRowIndex, csvHelper.MaxColumnIndex, csvHelper.GetCsvFileData(), ConvertStringDataToPreferenceScore);
 
+            SecondMain secondMain = new SecondMain();
         }
 
         static int ConvertStringDataToPreferenceScore(string data)
