@@ -7,9 +7,14 @@ namespace CS_GA
 {
     class Program
     {
+        private const string _filePath = "F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv";
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CsvHelper<int> csvHelper = new CsvHelper<int>(_filePath, ",",true, true);
+        }
+
+        public void t() { 
+        Console.WriteLine("Hello World!");
             bool ignoreHeader = true;
 
             // TODO: Dynamically set data array length
