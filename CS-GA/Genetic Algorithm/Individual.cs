@@ -12,6 +12,13 @@ namespace CS_GA.Genetic_Algorithm
 
         public int ChromosomeSize { get; }
 
+        public Individual()
+        {
+            ChromosomeSize = 14;
+            _chromosome = new int[ChromosomeSize];
+            InitialiseChromosome();
+        }
+
         public Individual(int maxRowIndex, int maxColumnIndex)
         {
             _maxGeneValue = maxRowIndex;
@@ -78,7 +85,7 @@ namespace CS_GA.Genetic_Algorithm
         /// Find a gene that hasn't already been assigned in the chromosome;
         /// </summary>
         /// <returns>A valid gene for the chromosome.</returns>
-        private int GenerateNewGene()
+        public int GenerateNewGene()
         {
             Random r = new Random();
             int newGene = r.Next(_maxGeneValue);
@@ -96,7 +103,7 @@ namespace CS_GA.Genetic_Algorithm
         /// </summary>
         /// <param name="newGene">The gene to test for.</param>
         /// <returns>Bool representing if the gene is already present.</returns>
-        private bool GeneAlreadyAssigned(int newGene)
+        public bool GeneAlreadyAssigned(int newGene)
         {
             return _chromosome.ToList().Exists(gene => gene == newGene);
         }
@@ -104,6 +111,16 @@ namespace CS_GA.Genetic_Algorithm
         public int GetAllele(int geneIndex)
         {
             return _chromosome[geneIndex];
+        }
+
+        public int GetFitness()
+        {
+            return FitnessCalculator.GetIndividualFitness(this);
+        }
+
+        public void SetAllele(int geneIndex, int geneAllele)
+        {
+            _chromosome[geneIndex] = geneAllele;
         }
     }
 }

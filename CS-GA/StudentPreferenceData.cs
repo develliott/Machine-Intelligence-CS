@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CS_GA
 {
-    public class StudentPreferenceData<T>
+    public class StudentPreferenceData<T> : IStudentPreferenceData<T>
     {
         private readonly int _maxRowIndex;
         private readonly int _maxColumnIndex;
@@ -40,6 +40,7 @@ namespace CS_GA
 
         public T GetStudentPreference(int studentIndex, int timeslotIndex)
         {
+            //TODO: Bug where -1 is still present in the chromosome and is used as Student Index, causing out of bounds exception.
             return _studentPreference[studentIndex, timeslotIndex];
         }
 

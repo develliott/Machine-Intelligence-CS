@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using CS_GA.Genetic_Algorithm;
+using Ninject;
 
 namespace CS_GA
 {
@@ -12,8 +14,8 @@ namespace CS_GA
         static void Main(string[] args)
         {
             CsvHelper<string> csvHelper = new CsvHelper<string>(_filePath, ",",true, true);
-
-            // StudentPreferenceData<int> studentPreferenceData = new StudentPreferenceData<int>(csvHelper.MaxRowIndex, csvHelper.MaxColumnIndex, csvHelper.GetCsvFileData(), ConvertStringDataToPreferenceScore);
+            StudentPreferenceData<int> studentPreferenceData = new StudentPreferenceData<int>(csvHelper.MaxRowIndex, csvHelper.MaxColumnIndex, csvHelper.GetCsvFileData(), ConvertStringDataToPreferenceScore);
+            FitnessCalculator.SetStudentPreferenceData(studentPreferenceData);
 
             SecondMain secondMain = new SecondMain();
         }
