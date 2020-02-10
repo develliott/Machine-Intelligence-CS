@@ -1,44 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using CS_GA.Genetic_Algorithm;
 using Ninject;
+using Ninject.Parameters;
 
 namespace CS_GA
 {
-    class Program
+    internal class Program
     {
         private const string _filePath = "F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv";
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
-            CsvHelper<string> csvHelper = new CsvHelper<string>(_filePath, ",",true, true);
-            StudentPreferenceData<int> studentPreferenceData = new StudentPreferenceData<int>(csvHelper.MaxRowIndex, csvHelper.MaxColumnIndex, csvHelper.GetCsvFileData(), ConvertStringDataToPreferenceScore);
+            IKernel kernel = new StandardKernel(new Ninject.Bindings());
+
+
+            var csvHelper = kernel.Get<CsvHelper<string>>(new ConstructorArgument("filePath", _filePath),
+                new ConstructorArgument("delimiter", ","), new ConstructorArgument("ignoreFirstRow", true),
+                new ConstructorArgument("ignoreFirstColumn", true));
+
+
+            var studentPreferenceData = kernel.Get<StudentPreferenceData<int>>(
+                new ConstructorArgument("maxRowIndex", csvHelper.MaxRowIndex),
+                new ConstructorArgument("maxColumnIndex", csvHelper.MaxColumnIndex), new ConstructorArgument("csvFileData", csvHelper.GetCsvFileData()));
+            
             FitnessCalculator.SetStudentPreferenceData(studentPreferenceData);
 
-            SecondMain secondMain = new SecondMain();
+            var secondMain = new SecondMain();
         }
 
-        static int ConvertStringDataToPreferenceScore(string data)
-        {
-            int preferenceScore;
-            switch (data.ToLower())
-            {
-                case "no":
-                    preferenceScore = -10;
-                    break;
-                case "ok":
-                    preferenceScore = 1;
-                    break;
-                case "pref":
-                    preferenceScore = 10;
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-
-            return preferenceScore;
-        }
+       
     }
 }

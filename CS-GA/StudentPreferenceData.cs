@@ -10,20 +10,39 @@ namespace CS_GA
         private readonly int _maxRowIndex;
         private readonly int _maxColumnIndex;
         private readonly dynamic[,] _csvFileData;
-        private readonly Func<string, T> _converterFunc;
 
         // Rows then Columns for index size.
         private readonly T[,] _studentPreference;
 
-        public StudentPreferenceData(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData, Func<string, T> converterFunc)
+        public StudentPreferenceData(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData)
         {
             _maxRowIndex = maxRowIndex;
             _maxColumnIndex = maxColumnIndex;
             _csvFileData = csvFileData;
-            _converterFunc = converterFunc;
             _studentPreference = new T[maxRowIndex, maxColumnIndex];
 
             SetStudentPreference();
+        }
+
+        private int ConvertStringDataToPreferenceScore(string data)
+        {
+            int preferenceScore;
+            switch (data.ToLower())
+            {
+                case "no":
+                    preferenceScore = -10;
+                    break;
+                case "ok":
+                    preferenceScore = 1;
+                    break;
+                case "pref":
+                    preferenceScore = 10;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            return preferenceScore;
         }
 
         private void SetStudentPreference()
@@ -33,7 +52,7 @@ namespace CS_GA
                 for (int currentColumnIndex = 0; currentColumnIndex < _maxColumnIndex; currentColumnIndex++)
                 {
                     _studentPreference[currentRowIndex, currentColumnIndex] =
-                        _converterFunc(_csvFileData[currentRowIndex, currentColumnIndex]);
+                        ConvertStringDataToPreferenceScore(_csvFileData[currentRowIndex, currentColumnIndex]);
                 }
             }
         }
