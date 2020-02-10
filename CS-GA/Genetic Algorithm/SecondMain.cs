@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CS_GA.Data;
 using Ninject;
 
 namespace CS_GA.Genetic_Algorithm
 {
     public class SecondMain
     {
-        public SecondMain()
+        public SecondMain(IEvolutionService evolutionService)
         {
             Population population = new Population(50, true);
             GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
