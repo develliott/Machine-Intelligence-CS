@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FileHelper\FileHelper.csproj" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.2" />
   </ItemGroup>
 
 </Project>

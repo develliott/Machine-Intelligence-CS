@@ -1,31 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CS_GA.Genetic_Algorithm
+﻿namespace CS_GA.Genetic_Algorithm
 {
     public class Population
     {
-        private Individual[] _individuals;
-
-        public int PopulationSize { get; }
+        private readonly Individual[] _individuals;
 
         public Population(int populationSize, bool initialise)
         {
             PopulationSize = populationSize;
             _individuals = new Individual[PopulationSize];
 
-            if (initialise)
-            {
-                InitialisePopulation();
-            }
+            if (initialise) InitialisePopulation();
         }
+
+        public int PopulationSize { get; }
 
         private void InitialisePopulation()
         {
             for (var individualIndex = 0; individualIndex < _individuals.Length; individualIndex++)
             {
-                Individual newIndividual = new Individual();
+                var newIndividual = new Individual();
                 _individuals[individualIndex] = newIndividual;
             }
         }
@@ -39,19 +32,15 @@ namespace CS_GA.Genetic_Algorithm
 
         public Individual GetFittestIndividual()
         {
-            Individual fittest = _individuals[0];
+            var fittest = _individuals[0];
             // Offset the index because we already have index 0 stored in the 'fittest' variable.
-            int indexOffset = 1;
+            var indexOffset = 1;
 
-            for (int i = indexOffset; i < PopulationSize; i++)
-            {
+            for (var i = indexOffset; i < PopulationSize; i++)
                 // If the current element has a higher fitness score than the current 'fittest' ->
                 if (fittest.GetFitness() <= GetIndividual(i).GetFitness())
-                {
                     // -> assign it as the the current 'fittest'.
                     fittest = GetIndividual(i);
-                }
-            }
             return fittest;
         }
 
@@ -59,6 +48,5 @@ namespace CS_GA.Genetic_Algorithm
         {
             _individuals[individualIndex] = individual;
         }
-
     }
 }

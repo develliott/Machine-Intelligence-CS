@@ -38,15 +38,15 @@ namespace CS_GA.Ninject
             Kernel.Bind<IChromosomeConstraint>().To<ChromosomeConstraint>().InSingletonScope()
                 .WithConstructorArgument("maxGeneValue", csvHelper.MaxRowIndex);
 
-
             // Transient Scoped Bindings 
             Kernel.Bind<IIndividual>().To<Individual>();
-            Kernel.Bind<IPopulation>().To<Population>();
-
+            Kernel.Bind<IPopulation>().To<Population>().InTransientScope();
 
             // Factories
             Kernel.Bind<IIndividualFactory>().ToFactory();
             Kernel.Bind<IPopulationFactory>().ToFactory();
         }
+
+
     }
 }

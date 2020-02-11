@@ -2,19 +2,15 @@
 using System.IO;
 using System.Linq;
 
-namespace CS_GA
+namespace CS_GA.DAL
 {
     public class CsvHelper<T>
     {
-        private readonly string _delimiter;
-
         private readonly T[,] _csvFileData;
+        private readonly string _delimiter;
         private readonly string _filePath;
         private readonly bool _ignoreFirstColumn;
         private readonly bool _ignoreFirstRow;
-
-        public int MaxRowIndex { get; private set; }
-        public int MaxColumnIndex { get; private set; }
 
         public CsvHelper(string filePath, string delimiter, bool ignoreFirstRow = false, bool ignoreFirstColumn = false)
         {
@@ -28,13 +24,16 @@ namespace CS_GA
             SetCsvFileData();
         }
 
+        public int MaxRowIndex { get; private set; }
+        public int MaxColumnIndex { get; private set; }
+
         public T[,] GetCsvFileData()
         {
             return _csvFileData;
         }
 
         /// <summary>
-        /// Populates the two dimensional array with the CSV file values.
+        ///     Populates the two dimensional array with the CSV file values.
         /// </summary>
         private void SetCsvFileData()
         {

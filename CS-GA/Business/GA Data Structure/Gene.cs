@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CS_GA.Data
+﻿namespace CS_GA.Business.GA_Data_Structure
 {
     public class Gene<T>
     {
