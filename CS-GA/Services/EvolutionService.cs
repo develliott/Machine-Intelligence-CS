@@ -66,15 +66,6 @@ namespace CS_GA.Services
             }
         }
 
-        public void SetBlankIndividual(IIndividual individual)
-        {
-            for (var geneIndex = 0; geneIndex < individual.GeneLength; geneIndex++)
-            {
-                individual.ClearTabuGenes();
-                individual.SetGeneValue(geneIndex, _outOfRangeValue);
-            }
-        }
-
         public IPopulation EvolvePopulation(IPopulation population)
         {
             var newPopulation = _populationFactory.CreatePopulation(50);
@@ -124,9 +115,7 @@ namespace CS_GA.Services
         private IIndividual crossover(IIndividual individual1, IIndividual individual2)
         {
             var newIndividual = _individualFactory.CreateIndividual();
-            SetBlankIndividual(newIndividual);
-
-
+            
             int crossoverIndex = _random.Next(newIndividual.GeneLength);
 
             for (int geneIndex = 0; geneIndex < newIndividual.GeneLength; geneIndex++)
@@ -174,7 +163,6 @@ namespace CS_GA.Services
     public interface IEvolutionService
     {
         void SetValidIndividual(IIndividual individual);
-        void SetBlankIndividual(IIndividual individual);
         IPopulation EvolvePopulation(IPopulation population);
     }
 }
