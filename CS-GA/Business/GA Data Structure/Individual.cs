@@ -9,7 +9,7 @@ namespace CS_GA.Business.GA_Data_Structure
     {
         private readonly IStudentDataService<int> _studentDataService;
 
-        public Chromosome<int> Chromosome { get; }
+        public IChromosome<int> Chromosome { get; }
 
         public int GeneLength => Chromosome.Size;
 
