@@ -26,6 +26,11 @@ namespace CS_GA.Business.GA_Data_Structure
             _tabuGenes = new List<int>();
         }
 
+        public bool IsAValidSolution()
+        {
+            return Chromosome.IsAValidSolution();
+        }
+
         public int GetGeneValue(int geneIndex) => Chromosome.GetGeneValue(geneIndex);
         public void SetGeneValue(int geneIndex, int value)
         {
