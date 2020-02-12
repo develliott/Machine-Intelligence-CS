@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CS_GA.Business.Common;
+using Ninject.Infrastructure.Language;
 
 namespace CS_GA.Business.GA_Data_Structure
 {
