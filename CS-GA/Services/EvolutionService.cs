@@ -20,7 +20,8 @@ namespace CS_GA.Services
         private readonly int tournamentSize = 5;
         private readonly double uniformRate = 0.25;
 
-        private IMutationOperator mutationOperator = new SwapMutationOperator();
+        private readonly IMutationOperator _mutationOperator = new SwapMutationOperator();
+        private readonly ICrossoverOperator _crossoverOperator = new OnePointCrossoverOperator();
 
         public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory,
             IEnvironmentService environmentService, IStudentDataService<int> studentDataService)
@@ -79,19 +80,21 @@ namespace CS_GA.Services
 
             for (var i = individualIndexOffset; i < population.Size; i++)
             {
+                var freshIndividual = _individualFactory.CreateIndividual();
+
                 var individual1 = tournamentSelection(population);
 
                 var individual2 = tournamentSelection(population);
 
-                var newIndividual = crossover(individual1, individual2);
+                var crossedoverIndividual = _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
 
-                newPopulation.SetIndividual(i, newIndividual);
+                newPopulation.SetIndividual(i, crossedoverIndividual);
             }
 
             // Mutate
             for (var i = individualIndexOffset; i < population.Size; i++)
             {
-                mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
+                _mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
             }
 
             return newPopulation;
@@ -110,35 +113,6 @@ namespace CS_GA.Services
             _environmentService.UpdatePopulationSuitability(ref tournamentPopulation);
 
             return tournamentPopulation.MostSuitableIndividualToProblem;
-        }
-
-        private IIndividual crossover(IIndividual individual1, IIndividual individual2)
-        {
-            var newIndividual = _individualFactory.CreateIndividual();
-            
-            int crossoverIndex = _random.Next(newIndividual.GeneLength);
-
-            for (int geneIndex = 0; geneIndex < newIndividual.GeneLength; geneIndex++)
-            {
-                int allele;
-
-                if (geneIndex < crossoverIndex)
-                {
-                    allele = individual1.GetGeneValue(geneIndex);
-                }
-                else
-                {
-                    allele = individual2.GetGeneValue(geneIndex);
-                }
-
-                newIndividual.SetGeneValue(geneIndex, allele);
-
-            }
-
-            // TODO: Ensure new individual is valid.
-
-            return newIndividual;
-
         }
 
         private void mutate(IIndividual individual)
