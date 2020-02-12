@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CS_GA.Business.Common;
 using CS_GA.Business.Common.Factories;
+using CS_GA.Business.Operators;
 
 namespace CS_GA.Services
 {
@@ -18,6 +19,8 @@ namespace CS_GA.Services
         private readonly double mutationRate = 0.15;
         private readonly int tournamentSize = 5;
         private readonly double uniformRate = 0.25;
+
+        private IMutationOperator mutationOperator = new SwapMutation();
 
         public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory,
             IEnvironmentService environmentService, IStudentDataService<int> studentDataService)
@@ -95,7 +98,10 @@ namespace CS_GA.Services
             }
 
             // Mutate
-            for (var i = individualIndexOffset; i < population.Size; i++) mutate(newPopulation.GetIndividual(i));
+            for (var i = individualIndexOffset; i < population.Size; i++)
+            {
+                mutationOperator.Mutate(newPopulation.GetIndividual(i).Chromosome);
+            }
 
             return newPopulation;
         }

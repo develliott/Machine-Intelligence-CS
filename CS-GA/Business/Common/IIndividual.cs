@@ -4,6 +4,7 @@ namespace CS_GA.Business.Common
 {
     public interface IIndividual
     {
+        IChromosome<int> Chromosome { get; }
         int GeneLength { get; }
         int SuitabilityToProblem { get; set; }
         int GetGeneValue(int geneIndex);

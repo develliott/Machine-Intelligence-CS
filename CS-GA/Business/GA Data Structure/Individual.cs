@@ -8,28 +8,30 @@ namespace CS_GA.Business.GA_Data_Structure
     public class Individual : IIndividual
     {
         private readonly IStudentDataService<int> _studentDataService;
-        public int GeneLength => _chromosome.Size;
+
+        public Chromosome<int> Chromosome { get; }
+
+        public int GeneLength => Chromosome.Size;
 
         private List<int> _tabuGenes;
 
         public int SuitabilityToProblem { get; set; }
 
-        private readonly Chromosome<int> _chromosome;
 
         public Individual(IStudentDataService<int> studentDataService)
         {
             _studentDataService = studentDataService;
             
-            _chromosome = new Chromosome<int>(studentDataService.MaxNumberOfTimeslots);
+            Chromosome = new Chromosome<int>(studentDataService.MaxNumberOfTimeslots);
             _tabuGenes = new List<int>();
         }
 
-        public int GetGeneValue(int geneIndex) => _chromosome.GetGeneValue(geneIndex);
+        public int GetGeneValue(int geneIndex) => Chromosome.GetGeneValue(geneIndex);
         public void SetGeneValue(int geneIndex, int value)
         {
             if (!_tabuGenes.Contains(value))
             {
-                _chromosome.SetGeneValue(geneIndex, value);
+                Chromosome.SetGeneValue(geneIndex, value);
                 _tabuGenes.Add(value);
             }
         }
@@ -38,9 +40,9 @@ namespace CS_GA.Business.GA_Data_Structure
         {
             for (int geneIndex = 0; geneIndex < GeneLength; geneIndex++)
             {
-                if (_chromosome.GetGeneValue(geneIndex) == allele)
+                if (Chromosome.GetGeneValue(geneIndex) == allele)
                 {
-                    _chromosome.SetGeneValue(geneIndex, -1);
+                    Chromosome.SetGeneValue(geneIndex, -1);
                 }
             }
         }
@@ -69,18 +71,18 @@ namespace CS_GA.Business.GA_Data_Structure
         public void SwapAlleles(int allele1Index, int allele2Value)
         {
             int allele2Index = -1;
-            int allele1Value = _chromosome.GetGeneValue(allele1Index);
+            int allele1Value = Chromosome.GetGeneValue(allele1Index);
 
             for (int geneIndex = 0; geneIndex < GeneLength; geneIndex++)
             {
-                if (_chromosome.GetGeneValue(geneIndex) == allele2Value)
+                if (Chromosome.GetGeneValue(geneIndex) == allele2Value)
                 {
                     allele2Index = geneIndex;
                 }
             }
 
-            _chromosome.SetGeneValue(allele1Index, allele2Value);
-            _chromosome.SetGeneValue(allele2Index, allele1Value);
+            Chromosome.SetGeneValue(allele1Index, allele2Value);
+            Chromosome.SetGeneValue(allele2Index, allele1Value);
 
         }
     }
