@@ -16,10 +16,6 @@ namespace CS_GA
             IPopulation population = populationFactory.CreatePopulation(50);
             population.InitialisePopulation();
 
-            evolutionService.EvolvePopulation(population);
-
-            environmentService.UpdatePopulationSuitability(ref population);
-
             // Evolve our population until we reach an near-optimal solution
             var generationCount = 0;
             var maxGenerations = 100000;
@@ -34,6 +30,8 @@ namespace CS_GA
             {
                 generationCount++;
             
+                _environmentService.UpdatePopulationSuitability(ref population);
+
                 // Find the fittest individual in the current population.
                 var fittestScoreInPop = population.MostSuitableIndividualToProblem.SuitabilityToProblem;
             
@@ -53,7 +51,6 @@ namespace CS_GA
                 Console.WriteLine("Generation: " + generationCount + " Fittest: " + fittestScoreInPop);
             
                 population = evolutionService.EvolvePopulation(population);
-                environmentService.UpdatePopulationSuitability(ref population);
             }
 
 

@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using CS_GA.Business.Common;
 using CS_GA.Business.Common.Factories;
-using CS_GA.Business.GA_Data_Structure;
 
 namespace CS_GA.Services
 {
     public class EvolutionService : IEvolutionService
     {
-        private readonly IPopulationFactory _populationFactory;
-        private readonly IIndividualFactory _individualFactory;
-        private readonly IEnvironmentService _environmentService;
-        private readonly IStudentDataService<int> _studentDataService;
-
         private readonly bool _elitism = true;
-        private readonly double mutationRate = 0.15;
-        private readonly int tournamentSize = 5;
-        private readonly double uniformRate = 0.5;
+        private readonly IEnvironmentService _environmentService;
+        private readonly IIndividualFactory _individualFactory;
+        private readonly int _outOfRangeValue = -1;
+        private readonly IPopulationFactory _populationFactory;
 
         private readonly Random _random = new Random();
-        private readonly int _outOfRangeValue = -1;
+        private readonly IStudentDataService<int> _studentDataService;
+        private readonly double mutationRate = 0.15;
+        private readonly int tournamentSize = 5;
+        private readonly double uniformRate = 0.25;
 
-        public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory, IEnvironmentService environmentService, IStudentDataService<int> studentDataService)
+        public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory,
+            IEnvironmentService environmentService, IStudentDataService<int> studentDataService)
         {
             _populationFactory = populationFactory;
             _individualFactory = individualFactory;
@@ -31,15 +30,35 @@ namespace CS_GA.Services
 
         public void SetValidIndividual(IIndividual individual)
         {
-            for (var geneIndex = 0; geneIndex < individual.GeneLength; geneIndex++)
-            {
-                List<int> validGenes = individual.GetValidGenes();
+            var tabuIndices = new List<int>();
 
-                if (validGenes.Count > 0)
+            while (tabuIndices.Count < _studentDataService.MaxNumberOfStudents)
+            {
+                // Find a random index that hasn't been set yet.
+                var randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeslots);
+                while (tabuIndices.Contains(randomIndex))
                 {
-                    int randomValidGeneIndex = _random.Next(validGenes.Count);
-                    int randomValidGene = validGenes[randomValidGeneIndex];
-                    individual.SetGeneValue(geneIndex, randomValidGene);
+                    randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeslots);
+                }
+                tabuIndices.Add(randomIndex);
+
+
+                var validAlleles = individual.GetValidAlleles();
+                int newAllele;
+
+                if (validAlleles.Count > 0)
+                {
+                    if (validAlleles.Count > 1)
+                    {
+                        var randomValidAlleleIndex = _random.Next(validAlleles.Count);
+                        newAllele = validAlleles[randomValidAlleleIndex];
+                    }
+                    else
+                    {
+                        newAllele = validAlleles[0];
+                    }
+
+                    individual.SetGeneValue(randomIndex, newAllele);
                 }
             }
         }
@@ -55,9 +74,9 @@ namespace CS_GA.Services
 
         public IPopulation EvolvePopulation(IPopulation population)
         {
-            IPopulation newPopulation = _populationFactory.CreatePopulation(50);
+            var newPopulation = _populationFactory.CreatePopulation(50);
 
-            int individualIndexOffset = 0;
+            var individualIndexOffset = 0;
             if (_elitism)
             {
                 newPopulation.SetIndividual(0, population.MostSuitableIndividualToProblem);
@@ -83,7 +102,7 @@ namespace CS_GA.Services
 
         private IIndividual tournamentSelection(IPopulation population)
         {
-            IPopulation tournamentPopulation = _populationFactory.CreatePopulation(50);
+            var tournamentPopulation = _populationFactory.CreatePopulation(5);
 
             for (var i = 0; i < tournamentPopulation.Size; i++)
             {
@@ -98,64 +117,49 @@ namespace CS_GA.Services
 
         private IIndividual crossover(IIndividual individual1, IIndividual individual2)
         {
-            IIndividual newIndividual = _individualFactory.CreateIndividual();
-            
-            for (var geneIndex = 0; geneIndex < newIndividual.GeneLength; geneIndex++)
+            var newIndividual = _individualFactory.CreateIndividual();
+            SetBlankIndividual(newIndividual);
+
+
+            int crossoverIndex = _random.Next(newIndividual.GeneLength);
+
+            for (int geneIndex = 0; geneIndex < newIndividual.GeneLength; geneIndex++)
             {
-                int newAllele;
-                List<int> newIndividualValidGenes = newIndividual.GetValidGenes();
+                int allele;
 
-                var individual1AlleleAtCurrentIndex = individual1.GetGeneValue(geneIndex);
-                var individual2AlleleAtCurrentIndex = individual2.GetGeneValue(geneIndex);
-
-                var individual1Valid = newIndividualValidGenes.Contains(individual1AlleleAtCurrentIndex);
-                var individual2Valid = newIndividualValidGenes.Contains(individual2AlleleAtCurrentIndex);
-
-                if(individual1Valid && individual2Valid)
+                if (geneIndex < crossoverIndex)
                 {
-                    if (_random.NextDouble() <= uniformRate)
-                        newAllele = individual1.GetGeneValue(geneIndex);
-                    else
-                        newAllele = individual2.GetGeneValue(geneIndex);
-                }
-                else if (!individual1Valid && !individual2Valid)
-                {
-                    int randomAllele = _random.Next(_studentDataService.MaxNumberOfStudents);
-
-                    if (newIndividual.IsGeneAlreadyAssigned(randomAllele))
-                    {
-                        newIndividual.ClearAllele(randomAllele);
-                    }
-
-                    newAllele = randomAllele;
-                }
-                else if (individual1Valid)
-                {
-                    newAllele = individual1.GetGeneValue(geneIndex);
+                    allele = individual1.GetGeneValue(geneIndex);
                 }
                 else
                 {
-                    newAllele = individual2.GetGeneValue(geneIndex);
-
+                    allele = individual2.GetGeneValue(geneIndex);
                 }
 
-                newIndividual.SetGeneValue(geneIndex, newAllele);
+                newIndividual.SetGeneValue(geneIndex, allele);
+
             }
 
+            // TODO: Ensure new individual is valid.
+
             return newIndividual;
+
         }
 
         private void mutate(IIndividual individual)
         {
-            for (int geneIndex = 0; geneIndex < individual.GeneLength; geneIndex++)
+            //TODO: Check mutation results in a valid solution
+
+            for (var geneIndex = 0; geneIndex < individual.GeneLength; geneIndex++)
             {
                 // Mutate or skip
                 if (_random.NextDouble() <= mutationRate)
                 {
-                    var validGenes = individual.GetValidGenes();
-                    var randomAllele = _random.Next(validGenes.Count);
+                    var randomAllele = _random.Next(_studentDataService.MaxNumberOfStudents);
 
                     individual.SetGeneValue(geneIndex, randomAllele);
+
+                    individual.SwapAlleles(geneIndex, randomAllele);
                 }
             }
         }
@@ -166,6 +170,5 @@ namespace CS_GA.Services
         void SetValidIndividual(IIndividual individual);
         void SetBlankIndividual(IIndividual individual);
         IPopulation EvolvePopulation(IPopulation population);
-
     }
 }

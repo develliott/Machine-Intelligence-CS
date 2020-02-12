@@ -15,8 +15,8 @@ namespace CS_GA.Ninject
 {
     public class Bindings : NinjectModule
     {
-        // private const string _filePath = "F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv";
-        private const string _filePath = "C:\\dev\\GitHub\\Machine-Intelligence-CS\\Data\\StudentData.csv";
+        private const string _filePath = "F:\\repos\\CS-Machine-Intelligence-Algorithms\\Data\\StudentData.csv";
+        // private const string _filePath = "C:\\dev\\GitHub\\Machine-Intelligence-CS\\Data\\StudentData.csv";
 
         public override void Load()
         {

@@ -21,9 +21,12 @@ namespace CS_GA.Services
             for (var i = 0; i < individual.GeneLength; i++)
             {
                 var studentIndex = individual.GetGeneValue(i);
-                var timeslotIndex = i;
+                if (studentIndex != -1)
+                {
+                    var timeslotIndex = i;
 
-                fitness += _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+                    fitness += _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+                }
             }
 
             individual.SuitabilityToProblem = fitness;

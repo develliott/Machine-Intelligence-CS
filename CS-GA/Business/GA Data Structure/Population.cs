@@ -27,12 +27,10 @@ namespace CS_GA.Business.GA_Data_Structure
             for (var individualIndex = 0; individualIndex < Size; individualIndex++)
             {
                 var individual = _individualFactory.CreateIndividual();
+                _evolutionService.SetBlankIndividual(individual);
                 _evolutionService.SetValidIndividual(individual);
                 Individuals[individualIndex] = individual;
             }
-
-
-
         }
 
         public IIndividual GetIndividual(int populationIndex)

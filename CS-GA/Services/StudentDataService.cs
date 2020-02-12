@@ -34,6 +34,7 @@ namespace CS_GA.Services
 
         public T GetStudentPreference(int studentIndex, int timeslotIndex)
         {
+
             //TODO: Bug where -1 is still present in the chromosome and is used as Student Index, causing out of bounds exception.
             return _studentPreference[studentIndex, timeslotIndex];
         }
@@ -65,6 +66,7 @@ namespace CS_GA.Services
             for (var currentColumnIndex = 0; currentColumnIndex < MaxNumberOfTimeslots; currentColumnIndex++)
                 _studentPreference[currentRowIndex, currentColumnIndex] =
                     ConvertStringDataToPreferenceScore(_csvFileData[currentRowIndex, currentColumnIndex]);
+
         }
 
         public T[] GetStudentData(int studentIndex)
