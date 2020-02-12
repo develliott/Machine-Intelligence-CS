@@ -5,11 +5,11 @@ using CS_GA.Business.Common;
 
 namespace CS_GA.Business.Operators
 {
-    public class SwapMutation : IMutationOperator
+    public class SwapMutationOperator : IMutationOperator
     {
         private Random _random = new Random();
 
-        public IChromosome<int> Mutate(IChromosome<int> chromosome)
+        public IChromosome<int> PerformMutation(IChromosome<int> chromosome)
         {
             // TODO: Implement infinity searching with boundary constraints
 

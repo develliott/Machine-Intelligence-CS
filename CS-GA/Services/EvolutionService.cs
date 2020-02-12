@@ -20,7 +20,7 @@ namespace CS_GA.Services
         private readonly int tournamentSize = 5;
         private readonly double uniformRate = 0.25;
 
-        private IMutationOperator mutationOperator = new SwapMutation();
+        private IMutationOperator mutationOperator = new SwapMutationOperator();
 
         public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory,
             IEnvironmentService environmentService, IStudentDataService<int> studentDataService)
@@ -100,7 +100,7 @@ namespace CS_GA.Services
             // Mutate
             for (var i = individualIndexOffset; i < population.Size; i++)
             {
-                mutationOperator.Mutate(newPopulation.GetIndividual(i).Chromosome);
+                mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
             }
 
             return newPopulation;
