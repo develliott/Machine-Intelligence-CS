@@ -9,7 +9,7 @@ namespace CS_GA.Business.GA_Data_Structure
     {
         private readonly IStudentDataService<int> _studentDataService;
 
-        public IChromosome<int> Chromosome { get; }
+        public IChromosome Chromosome { get; }
 
         public int GeneLength => Chromosome.Size;
 
@@ -22,7 +22,7 @@ namespace CS_GA.Business.GA_Data_Structure
         {
             _studentDataService = studentDataService;
             
-            Chromosome = new Chromosome<int>(studentDataService.MaxNumberOfTimeslots);
+            Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeslots);
             _tabuGenes = new List<int>();
         }
 
@@ -54,7 +54,7 @@ namespace CS_GA.Business.GA_Data_Structure
 
         public List<int> GetValidAlleles()
         {
-            IEnumerable<int> allPossibleGenes = Enumerable.Range(0, _studentDataService.MaxNumberOfStudents);
+            IEnumerable<int> allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
             IEnumerable<int> validGenes = allPossibleGenes.Except(_tabuGenes);
             return validGenes.ToList();
         }

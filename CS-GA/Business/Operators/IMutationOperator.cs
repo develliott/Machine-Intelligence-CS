@@ -7,6 +7,6 @@ namespace CS_GA.Business.Operators
 {
     interface IMutationOperator
     {
-        IChromosome<int> PerformMutation(IChromosome<int> chromosome);
+        IChromosome PerformMutation(IChromosome chromosome);
     }
 }

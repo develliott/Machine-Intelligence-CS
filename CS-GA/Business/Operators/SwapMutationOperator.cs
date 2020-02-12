@@ -9,7 +9,7 @@ namespace CS_GA.Business.Operators
     {
         private Random _random = new Random();
 
-        public IChromosome<int> PerformMutation(IChromosome<int> chromosome)
+        public IChromosome PerformMutation(IChromosome chromosome)
         {
             // TODO: Implement infinity searching with boundary constraints
 

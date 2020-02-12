@@ -54,7 +54,7 @@ namespace CS_GA.Services
                 {
                     if (validAlleles.Count > 1)
                     {
-                        var randomValidAlleleIndex = _random.Next(validAlleles.Count);
+                        var randomValidAlleleIndex = _random.Next(1, validAlleles.Count);
                         newAllele = validAlleles[randomValidAlleleIndex];
                     }
                     else
@@ -69,7 +69,7 @@ namespace CS_GA.Services
 
         public IPopulation EvolvePopulation(IPopulation population)
         {
-            var newPopulation = _populationFactory.CreatePopulation(50);
+            var newPopulation = _populationFactory.CreatePopulation(population.Size);
 
             var individualIndexOffset = 0;
             if (_elitism)

@@ -32,6 +32,7 @@ namespace CS_GA.Business.Operators
 
             // TODO: Ensure new individual is valid.
 
+
             return newIndividual;
         }
     }

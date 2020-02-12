@@ -5,34 +5,34 @@ using Ninject.Infrastructure.Language;
 
 namespace CS_GA.Business.GA_Data_Structure
 {
-    public class Chromosome<T> : IChromosome<T>
+    public class Chromosome : IChromosome
     {
-        private readonly T[] _genes;
+        private readonly int[] _genes;
         public int Size { get; }
 
         public Chromosome(int size)
         {
             Size = size;
-            _genes = new T[Size];
+            _genes = new int[Size];
         }
 
 
-        public void SetGeneValue(int geneIndex, T value)
+        public void SetGeneValue(int geneIndex, int value)
         {
             _genes[geneIndex] = value;
         }
 
-        public T GetGeneValue(int geneIndex)
+        public int GetGeneValue(int geneIndex)
         {
             return _genes[geneIndex];
         }
 
-        public bool GeneValueAlreadyAssigned(T geneValue)
+        public bool GeneValueAlreadyAssigned(int geneValue)
         {
             return _genes.ToList().Exists(gene => gene.Equals(geneValue));
         }
 
-        public void InitialiseChromosome(T outOfRangeValue)
+        public void InitialiseChromosome(int outOfRangeValue)
         {
             for (var geneIndex = 0; geneIndex < Size; geneIndex++)
                 SetGeneValue(geneIndex, outOfRangeValue);
@@ -45,16 +45,18 @@ namespace CS_GA.Business.GA_Data_Structure
             // 0 = Unassigned Time Slot
             // Each student must be assigned 1 time.
 
-            List<T> genes = _genes.ToList();
+            List<int> genes = _genes.ToList();
             genes.RemoveAll(allele => allele.Equals(0));
+            genes.Sort();
+            int[] genesAsArray = genes.ToArray();
 
             //TODO: Change this when using final data!
             //TODO: Dynamically load this data
             var numberOfStudents = 7;
 
-            IList<int> requiredAlleles = Enumerable.Range(1, numberOfStudents).ToList();
+            int[] requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
 
-            bool validSolution = requiredAlleles.Equals(genes);
+            bool validSolution = requiredAlleles.SequenceEqual(genesAsArray);
 
             return validSolution;
         }
