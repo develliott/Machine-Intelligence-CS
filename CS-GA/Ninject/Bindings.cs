@@ -4,6 +4,8 @@ using CS_GA.Business.Common;
 using CS_GA.Business.Common.Factories;
 using CS_GA.Business.GA_Data_Structure;
 using CS_GA.Business.GA_Data_Structure.Helpers;
+using CS_GA.Business.Operators;
+using CS_GA.Business.Strategies;
 using CS_GA.DAL;
 using CS_GA.Services;
 using Ninject;
@@ -37,6 +39,10 @@ namespace CS_GA.Ninject
             Kernel.Bind<IChromosomeConstraint>().To<ChromosomeConstraint>().InSingletonScope()
                 .WithConstructorArgument("maxGeneValue", csvHelper.MaxRowIndex);
 
+            // Define Strategies and Operators
+            Kernel.Bind<ISelectionStrategy>().To<TournamentSelection>().InSingletonScope();
+            Kernel.Bind<ICrossoverOperator>().To<OnePointCrossoverOperator>().InSingletonScope();
+            Kernel.Bind<IMutationOperator>().To<SwapMutationOperator>().InSingletonScope();
 
             // Transient Scoped Bindings 
             Kernel.Bind<IIndividual>().To<Individual>();
