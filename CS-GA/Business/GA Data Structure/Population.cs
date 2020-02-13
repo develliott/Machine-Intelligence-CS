@@ -21,7 +21,7 @@ namespace CS_GA.Business.GA_Data_Structure
 
             Individuals = new IIndividual[Size];
         }
-        
+
         public void InitialisePopulation()
         {
             for (var individualIndex = 0; individualIndex < Size; individualIndex++)

@@ -58,7 +58,6 @@ namespace CS_GA.Services
             for (var currentColumnIndex = 0; currentColumnIndex < MaxNumberOfTimeSlots; currentColumnIndex++)
                 _studentPreference[currentRowIndex, currentColumnIndex] =
                     ConvertStringDataToPreferenceScore(_csvFileData[currentRowIndex, currentColumnIndex]);
-
         }
 
         public T[] GetStudentData(int studentIndex)
@@ -67,6 +66,7 @@ namespace CS_GA.Services
                 .Select(x => _studentPreference[studentIndex, x])
                 .ToArray();
         }
+
         public T GetStudentPreference(int studentIndex, int timeSlotIndex)
         {
             return _studentPreference[studentIndex, timeSlotIndex];

@@ -5,7 +5,7 @@ using CS_GA.Business.Common;
 
 namespace CS_GA.Business.Operators
 {
-    interface IMutationOperator
+    internal interface IMutationOperator
     {
         IChromosome PerformMutation(IChromosome chromosome);
     }

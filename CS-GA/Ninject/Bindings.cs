@@ -25,7 +25,6 @@ namespace CS_GA.Ninject
                 new ConstructorArgument("ignoreFirstColumn", true));
 
 
-
             // Services
             Kernel.Bind<IEvolutionService>().To<EvolutionService>().InSingletonScope();
             Kernel.Bind<IStudentDataService<int>>().To<StudentDataService<int>>().InSingletonScope()

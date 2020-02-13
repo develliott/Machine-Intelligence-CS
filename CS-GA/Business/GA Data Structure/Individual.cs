@@ -22,7 +22,7 @@ namespace CS_GA.Business.GA_Data_Structure
         public Individual(IStudentDataService<int> studentDataService)
         {
             _studentDataService = studentDataService;
-            
+
             Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeSlots);
             _tabuGenes = new List<int>();
         }
@@ -34,11 +34,10 @@ namespace CS_GA.Business.GA_Data_Structure
 
         public void CrossoverValidator()
         {
-
             if (!IsAValidSolution())
             {
                 var assignedAlleles = Chromosome.GetAssignedAlleles();
-                IEnumerable<int> allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
+                var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
                 var missingAlleles = allPossibleGenes.Except(assignedAlleles).ToList();
 
                 while (missingAlleles.Any())
@@ -50,11 +49,15 @@ namespace CS_GA.Business.GA_Data_Structure
 
             if (!IsAValidSolution())
             {
-                int s = 5;
+                var s = 5;
             }
         }
 
-        public int GetGeneValue(int geneIndex) => Chromosome.GetGeneValue(geneIndex);
+        public int GetGeneValue(int geneIndex)
+        {
+            return Chromosome.GetGeneValue(geneIndex);
+        }
+
         public void SetGeneValue(int geneIndex, int value)
         {
             if (!_tabuGenes.Contains(value))
@@ -66,30 +69,29 @@ namespace CS_GA.Business.GA_Data_Structure
 
         public void ClearAllele(int allele)
         {
-            for (int geneIndex = 0; geneIndex < GeneLength; geneIndex++)
-            {
+            for (var geneIndex = 0; geneIndex < GeneLength; geneIndex++)
                 if (Chromosome.GetGeneValue(geneIndex) == allele)
-                {
                     Chromosome.SetGeneValue(geneIndex, -1);
-                }
-            }
         }
 
         public List<int> GetValidAlleles()
         {
-            IEnumerable<int> allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
-            IEnumerable<int> validGenes = allPossibleGenes.Except(_tabuGenes);
+            var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
+            var validGenes = allPossibleGenes.Except(_tabuGenes);
             return validGenes.ToList();
         }
 
         public bool IsGeneAlreadyAssigned(int geneValue)
         {
-            List<int> validGenes = GetValidAlleles();
+            var validGenes = GetValidAlleles();
 
             return !validGenes.Contains(geneValue);
         }
 
-        public void ClearTabuGenes() => _tabuGenes.Clear();
+        public void ClearTabuGenes()
+        {
+            _tabuGenes.Clear();
+        }
 
         public void RemoveFromTabu(int allele)
         {
@@ -98,19 +100,13 @@ namespace CS_GA.Business.GA_Data_Structure
 
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             stringBuilder.Append("Time Slot Index:  ");
-            for (int i = 0; i < GeneLength; i++)
-            {
-                stringBuilder.Append($"|{i}   ");
-            }
+            for (var i = 0; i < GeneLength; i++) stringBuilder.Append($"|{i}   ");
 
             stringBuilder.AppendLine();
             stringBuilder.Append("Student ID:       ");
-            for (int i = 0; i < GeneLength; i++)
-            {
-                stringBuilder.Append($"|{GetGeneValue(i)}   ");
-            }
+            for (var i = 0; i < GeneLength; i++) stringBuilder.Append($"|{GetGeneValue(i)}   ");
 
             return stringBuilder.ToString();
         }

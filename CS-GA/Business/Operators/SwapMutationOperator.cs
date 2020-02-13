@@ -18,10 +18,7 @@ namespace CS_GA.Business.Operators
             var swapIndex2 = _random.Next(chromosome.Size);
 
             // Ensure indices are unique.
-            while (swapIndex1 == swapIndex2)
-            {
-                swapIndex2 = _random.Next(chromosome.Size);
-            }
+            while (swapIndex1 == swapIndex2) swapIndex2 = _random.Next(chromosome.Size);
 
             // Store the original values.
             var swapIndex1Value = chromosome.GetGeneValue(swapIndex1);

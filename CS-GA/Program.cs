@@ -17,6 +17,5 @@ namespace CS_GA
 
             Console.ReadLine();
         }
-
     }
 }

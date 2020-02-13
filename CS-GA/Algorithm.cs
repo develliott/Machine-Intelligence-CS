@@ -9,7 +9,7 @@ namespace CS_GA
     {
         public Algorithm(IEvolutionService evolutionService, IEnvironmentService environmentService)
         {
-            IPopulation population = environmentService.GenerateInitialisedPopulation(75);
+            var population = environmentService.GenerateInitialisedPopulation(75);
 
             // Evolve our population until we reach an near-optimal solution
             var generationCount = 0;
@@ -24,9 +24,9 @@ namespace CS_GA
                    generationsWithNoChangeToScore < maxGenerationsWithNoChangeToScore)
             {
                 generationCount++;
-                
+
                 var scoreOfFittestIndividual = population.MostSuitableIndividualToProblem.SuitabilityScore;
-            
+
                 // If the score hasn't improved since the last generation ->
                 if (scoreOfFittestIndividual == globalHighestScore)
                     // -> Increment 'generationsWithNoChangeToScore' by 1.
@@ -47,9 +47,7 @@ namespace CS_GA
                 //   How: Sub-sample the data by logging an update every 'subSampleRate' generations.
                 var subSampleRate = 10;
                 if (generationCount % subSampleRate == 0)
-                {
                     Console.WriteLine($"Generation [{generationCount}] ~ Highest Fitness [{scoreOfFittestIndividual}]");
-                }
 
                 population = evolutionService.EvolvePopulation(population);
                 environmentService.UpdatePopulationSuitability(population);

@@ -30,27 +30,21 @@ namespace CS_GA.Services
 
                     var score = _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
 
-                    if (score == 10 )
-                    {
+                    if (score == 10)
                         multiplier += 2;
-                    }
-                    else if(score == 1)
-                    {
-                        multiplier += 1;
-                    }
+                    else if (score == 1) multiplier += 1;
 
                     fitness += score;
                 }
             }
 
-            individual.SuitabilityScore = fitness + (1 * multiplier);
-
+            individual.SuitabilityScore = fitness + 1 * multiplier;
         }
 
         public IPopulation GenerateInitialisedPopulation(int size)
         {
             var population = _populationFactory.CreatePopulation(size);
-            
+
             //TODO: Refactor - Population shouldn't have knowledge about how to initialise itself
             population.InitialisePopulation();
 

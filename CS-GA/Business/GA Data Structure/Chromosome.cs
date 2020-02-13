@@ -7,7 +7,6 @@ using Ninject.Infrastructure.Language;
 
 namespace CS_GA.Business.GA_Data_Structure
 {
-
     public class Chromosome : IChromosome
     {
         private readonly int[] _genes;
@@ -34,12 +33,11 @@ namespace CS_GA.Business.GA_Data_Structure
 
         public List<int> GetAssignedAlleles()
         {
+            // Find all current assigned genes
+            var genes = _genes.ToList();
+            genes.RemoveAll(allele => allele.Equals(0));
 
-                // Find all current assigned genes
-                List<int> genes = _genes.ToList();
-                genes.RemoveAll(allele => allele.Equals(0));
-
-                return genes;
+            return genes;
         }
 
         public bool GeneValueAlreadyAssigned(int geneValue)
@@ -60,29 +58,29 @@ namespace CS_GA.Business.GA_Data_Structure
             // 0 = Unassigned Time Slot
             // Each student must be assigned 1 time.
 
-            List<int> genes = _genes.ToList();
+            var genes = _genes.ToList();
             genes.RemoveAll(allele => allele.Equals(0));
             genes.Sort();
-            int[] genesAsArray = genes.ToArray();
+            var genesAsArray = genes.ToArray();
 
             //TODO: Change this when using final data!
             //TODO: Dynamically load this data
             var numberOfStudents = 13;
 
-            int[] requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
+            var requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
 
-            bool validSolution = requiredAlleles.SequenceEqual(genesAsArray);
+            var validSolution = requiredAlleles.SequenceEqual(genesAsArray);
 
             return validSolution;
         }
 
-        public void SetRandomUnassignedAllele( int unassignedIdentifier, int alleleToReplaceWith)
+        public void SetRandomUnassignedAllele(int unassignedIdentifier, int alleleToReplaceWith)
         {
             // Find the index of every unassigned allele in the genes.
             var indicesOfUnassignedAlleles = Enumerable.Range(0, Size)
                 .Where(allele => _genes[allele] == unassignedIdentifier)
                 .ToList();
-            
+
             var randomIndex = _random.Next(indicesOfUnassignedAlleles.Count);
             SetGeneValue(indicesOfUnassignedAlleles[randomIndex], alleleToReplaceWith);
         }

@@ -38,9 +38,7 @@ namespace CS_GA.Services
                 // Find a random index that hasn't been set yet.
                 var randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
                 while (tabuIndices.Contains(randomIndex))
-                {
                     randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
-                }
                 tabuIndices.Add(randomIndex);
 
 
@@ -84,7 +82,8 @@ namespace CS_GA.Services
 
                 var individual2 = tournamentSelection(population);
 
-                var resultingIndividualFromCrossoverOperation = _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
+                var resultingIndividualFromCrossoverOperation =
+                    _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }
@@ -93,13 +92,11 @@ namespace CS_GA.Services
             for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
             {
                 // TODO: Refactor into _mutationOperator.PerformMutation
-                int maxNumberOfMutations = 7;
-                int randomMutationLimit = _random.Next(maxNumberOfMutations);
+                var maxNumberOfMutations = 7;
+                var randomMutationLimit = _random.Next(maxNumberOfMutations);
 
-                for (int numberOfMutations = 0; numberOfMutations < randomMutationLimit; numberOfMutations++)
-                {
+                for (var numberOfMutations = 0; numberOfMutations < randomMutationLimit; numberOfMutations++)
                     _mutationOperator.PerformMutation(newPopulation.GetIndividual(individualIndex).Chromosome);
-                }
             }
 
             return newPopulation;
