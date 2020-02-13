@@ -10,7 +10,6 @@ namespace CS_GA.Services
     public class EvolutionService : IEvolutionService
     {
         private readonly bool _elitism = true;
-        private readonly IIndividualFactory _individualFactory;
         private readonly IPopulationFactory _populationFactory;
 
         private readonly Random _random = new Random();
@@ -18,17 +17,14 @@ namespace CS_GA.Services
 
         private readonly ICrossoverOperator _crossoverOperator;
         private readonly IMutationOperator _mutationOperator;
-        private readonly ISelectionStrategy _selectionStrategy;
 
 
-        public EvolutionService(IPopulationFactory populationFactory, IIndividualFactory individualFactory, IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator, IMutationOperator mutationOperator, ISelectionStrategy selectionStrategy)
+        public EvolutionService(IPopulationFactory populationFactory, IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator, IMutationOperator mutationOperator)
         {
             _populationFactory = populationFactory;
-            _individualFactory = individualFactory;
             _studentDataService = studentDataService;
             _crossoverOperator = crossoverOperator;
             _mutationOperator = mutationOperator;
-            _selectionStrategy = selectionStrategy;
         }
 
         public void SetValidIndividual(IIndividual individual)
@@ -64,62 +60,41 @@ namespace CS_GA.Services
             }
         }
 
-        public IPopulation EvolvePopulation(IPopulation population)
+        public IPopulation EvolvePopulation(IPopulation oldPopulation)
         {
-            var newPopulation = _populationFactory.CreatePopulation(population.Size);
+            var newPopulation = _populationFactory.CreatePopulation(oldPopulation.Size);
 
             var individualIndexOffset = 0;
             if (_elitism)
             {
-                newPopulation.SetIndividual(0, population.MostSuitableIndividualToProblem);
+                newPopulation.SetIndividual(0, oldPopulation.MostSuitableIndividualToProblem);
                 individualIndexOffset = 1;
             }
 
-            // Crossover
-            for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
+            // Populate 'newPopulation' with children from the parents in 'oldPopulation' to exploit the current knowledge.
+            for (var individualIndex = individualIndexOffset; individualIndex < newPopulation.Size; individualIndex++)
             {
                 var resultingIndividualFromCrossoverOperation =
-                    _crossoverOperator.PerformCrossover(population);
+                    _crossoverOperator.PerformCrossover(oldPopulation);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }
 
-            // Mutate
-            for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
+            // Mutate each individual in the new population to explore the problem domain.
+            for (var individualIndex = individualIndexOffset; individualIndex < oldPopulation.Size; individualIndex++)
             {
-                // TODO: Refactor into _mutationOperator.PerformMutation
-                var maxNumberOfMutations = 7;
-                var randomMutationLimit = _random.Next(maxNumberOfMutations);
-
-                for (var numberOfMutations = 0; numberOfMutations < randomMutationLimit; numberOfMutations++)
-                    _mutationOperator.PerformMutation(newPopulation.GetIndividual(individualIndex).Chromosome);
+                // TODO: Refactor the 'currentIndividual.Chromosome' - shouldn't be able to view Chromosome.
+                var currentIndividual = newPopulation.GetIndividual(individualIndex);
+                _mutationOperator.PerformMutation(currentIndividual.Chromosome);
             }
 
             return newPopulation;
         }
-
-        // tournament
-
-        // private IIndividual tournamentSelection(IPopulation population)
-        // {
-        //     //TODO: Refactor into own ISelectionStrategy
-        //     var tournamentPopulation = _populationFactory.CreatePopulation(tournamentSize);
-        //
-        //     for (var i = 0; i < tournamentPopulation.Size; i++)
-        //     {
-        //         var randomIndividualIndex = _random.Next(0, population.Size);
-        //         tournamentPopulation.SetIndividual(i, population.GetIndividual(randomIndividualIndex));
-        //     }
-        //
-        //     _environmentService.UpdatePopulationSuitability(tournamentPopulation);
-        //
-        //     return tournamentPopulation.MostSuitableIndividualToProblem;
-        // }
     }
 
     public interface IEvolutionService
     {
         void SetValidIndividual(IIndividual individual);
-        IPopulation EvolvePopulation(IPopulation population);
+        IPopulation EvolvePopulation(IPopulation oldPopulation);
     }
 }
