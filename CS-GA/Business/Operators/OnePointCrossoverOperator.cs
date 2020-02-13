@@ -11,7 +11,7 @@ namespace CS_GA.Business.Operators
 
         public IIndividual PerformCrossover(IIndividual newIndividual, IIndividual individual1, IIndividual individual2)
         {
-            int crossoverIndex = _random.Next(newIndividual.GeneLength);
+            int crossoverIndex = _random.Next(0, newIndividual.GeneLength - 1);
 
             for (int geneIndex = 0; geneIndex < newIndividual.GeneLength; geneIndex++)
             {
@@ -32,6 +32,7 @@ namespace CS_GA.Business.Operators
 
             // TODO: Ensure new individual is valid.
 
+            newIndividual.CrossoverValidator();
 
             return newIndividual;
         }

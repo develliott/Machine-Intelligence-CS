@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CS_GA.Business.Common;
 using CS_GA.Services;
 
@@ -22,13 +23,35 @@ namespace CS_GA.Business.GA_Data_Structure
         {
             _studentDataService = studentDataService;
             
-            Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeslots);
+            Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeSlots);
             _tabuGenes = new List<int>();
         }
 
         public bool IsAValidSolution()
         {
             return Chromosome.IsAValidSolution();
+        }
+
+        public void CrossoverValidator()
+        {
+
+            if (!IsAValidSolution())
+            {
+                var assignedAlleles = Chromosome.GetAssignedAlleles();
+                IEnumerable<int> allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
+                var missingAlleles = allPossibleGenes.Except(assignedAlleles).ToList();
+
+                while (missingAlleles.Any())
+                {
+                    Chromosome.ReplaceRandomZeroWithAllele(missingAlleles[0]);
+                    missingAlleles.Remove(missingAlleles[0]);
+                }
+            }
+
+            if (!IsAValidSolution())
+            {
+                int s = 5;
+            }
         }
 
         public int GetGeneValue(int geneIndex) => Chromosome.GetGeneValue(geneIndex);
@@ -73,22 +96,23 @@ namespace CS_GA.Business.GA_Data_Structure
             _tabuGenes.Remove(allele);
         }
 
-        public void SwapAlleles(int allele1Index, int allele2Value)
+        public override string ToString()
         {
-            int allele2Index = -1;
-            int allele1Value = Chromosome.GetGeneValue(allele1Index);
-
-            for (int geneIndex = 0; geneIndex < GeneLength; geneIndex++)
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("Time Slot Index:  ");
+            for (int i = 0; i < GeneLength; i++)
             {
-                if (Chromosome.GetGeneValue(geneIndex) == allele2Value)
-                {
-                    allele2Index = geneIndex;
-                }
+                stringBuilder.Append($"{i}  ");
             }
 
-            Chromosome.SetGeneValue(allele1Index, allele2Value);
-            Chromosome.SetGeneValue(allele2Index, allele1Value);
+            stringBuilder.AppendLine();
+            stringBuilder.Append("Student ID:       ");
+            for (int i = 0; i < GeneLength; i++)
+            {
+                stringBuilder.Append($"{GetGeneValue(i)}  ");
+            }
 
+            return stringBuilder.ToString();
         }
     }
 }

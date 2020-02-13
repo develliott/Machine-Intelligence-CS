@@ -13,8 +13,10 @@ namespace CS_GA
         {
             _environmentService = environmentService;
 
-            IPopulation population = populationFactory.CreatePopulation(50);
+            IPopulation population = populationFactory.CreatePopulation(75);
             population.InitialisePopulation();
+            _environmentService.UpdatePopulationSuitability(population);
+
 
             // Evolve our population until we reach an near-optimal solution
             var generationCount = 0;
@@ -22,16 +24,14 @@ namespace CS_GA
 
             var globalHighestScore = 0;
             var generationsWithNoChangeToScore = 0;
-            var maxGenerationsWithNoChangeToScore = 500;
+            var maxGenerationsWithNoChangeToScore = 1000;
 
             // Simulate 'maxGenerations' amount of generations, unless the score hasn't changed for 'maxGenerationsWithNoChangeToScore'.
             while (generationCount < maxGenerations &&
                    generationsWithNoChangeToScore < maxGenerationsWithNoChangeToScore)
             {
                 generationCount++;
-            
-                _environmentService.UpdatePopulationSuitability(ref population);
-
+                
                 // Find the fittest individual in the current population.
                 var fittestScoreInPop = population.MostSuitableIndividualToProblem.SuitabilityToProblem;
             
@@ -51,8 +51,9 @@ namespace CS_GA
                 Console.WriteLine("Generation: " + generationCount + " Fittest: " + fittestScoreInPop);
             
                 population = evolutionService.EvolvePopulation(population);
-            }
+                _environmentService.UpdatePopulationSuitability(population);
 
+            }
 
             Console.WriteLine("\nSolution found!");
 
@@ -61,7 +62,7 @@ namespace CS_GA
                     $"The score hasn't changed in {maxGenerationsWithNoChangeToScore} generations, so it has been considered an optimal solution.");
 
             Console.WriteLine("\nGeneration: " + generationCount);
-            Console.WriteLine("Genes (Employee IDs):");
+            Console.WriteLine("Solution:");
             Console.WriteLine(population.MostSuitableIndividualToProblem);
             Console.WriteLine("Fitness: " + population.MostSuitableIndividualToProblem.SuitabilityToProblem);
         }

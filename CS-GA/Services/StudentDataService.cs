@@ -17,7 +17,7 @@ namespace CS_GA.Services
             _maxRowIndex = maxRowIndex;
             _maxColumnIndex = maxColumnIndex;
             MaxNumberOfStudents = _maxRowIndex;
-            MaxNumberOfTimeslots = _maxColumnIndex;
+            MaxNumberOfTimeSlots = _maxColumnIndex;
 
             _csvFileData = csvFileData;
             _studentPreference = new T[maxRowIndex, maxColumnIndex];
@@ -28,16 +28,10 @@ namespace CS_GA.Services
         }
 
         public int MaxNumberOfStudents { get; }
-        public int MaxNumberOfTimeslots { get; }
+        public int MaxNumberOfTimeSlots { get; }
 
         public Type TypeOfData { get; }
 
-        public T GetStudentPreference(int studentIndex, int timeslotIndex)
-        {
-
-            //TODO: Bug where -1 is still present in the chromosome and is used as Student Index, causing out of bounds exception.
-            return _studentPreference[studentIndex, timeslotIndex];
-        }
 
         private int ConvertStringDataToPreferenceScore(string data)
         {
@@ -45,7 +39,7 @@ namespace CS_GA.Services
             switch (data.ToLower())
             {
                 case "no":
-                    preferenceScore = -10;
+                    preferenceScore = -50;
                     break;
                 case "ok":
                     preferenceScore = 1;
@@ -63,7 +57,7 @@ namespace CS_GA.Services
         private void SetStudentPreference()
         {
             for (var currentRowIndex = 0; currentRowIndex < MaxNumberOfStudents; currentRowIndex++)
-            for (var currentColumnIndex = 0; currentColumnIndex < MaxNumberOfTimeslots; currentColumnIndex++)
+            for (var currentColumnIndex = 0; currentColumnIndex < MaxNumberOfTimeSlots; currentColumnIndex++)
                 _studentPreference[currentRowIndex, currentColumnIndex] =
                     ConvertStringDataToPreferenceScore(_csvFileData[currentRowIndex, currentColumnIndex]);
 
@@ -75,13 +69,17 @@ namespace CS_GA.Services
                 .Select(x => _studentPreference[studentIndex, x])
                 .ToArray();
         }
+        public T GetStudentPreference(int studentIndex, int timeSlotIndex)
+        {
+            return _studentPreference[studentIndex, timeSlotIndex];
+        }
     }
 
-    public interface IStudentDataService<T>
+    public interface IStudentDataService<out T>
     {
         int MaxNumberOfStudents { get; }
-        int MaxNumberOfTimeslots { get; }
+        int MaxNumberOfTimeSlots { get; }
         Type TypeOfData { get; }
-        T GetStudentPreference(int studentIndex, int timeslotIndex);
+        T GetStudentPreference(int studentIndex, int timeSlotIndex);
     }
 }

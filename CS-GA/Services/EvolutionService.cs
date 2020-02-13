@@ -11,14 +11,11 @@ namespace CS_GA.Services
         private readonly bool _elitism = true;
         private readonly IEnvironmentService _environmentService;
         private readonly IIndividualFactory _individualFactory;
-        private readonly int _outOfRangeValue = -1;
         private readonly IPopulationFactory _populationFactory;
 
         private readonly Random _random = new Random();
         private readonly IStudentDataService<int> _studentDataService;
-        private readonly double mutationRate = 0.15;
-        private readonly int tournamentSize = 5;
-        private readonly double uniformRate = 0.25;
+        private readonly int tournamentSize = 10;
 
         private readonly IMutationOperator _mutationOperator = new SwapMutationOperator();
         private readonly ICrossoverOperator _crossoverOperator = new OnePointCrossoverOperator();
@@ -39,22 +36,22 @@ namespace CS_GA.Services
             while (tabuIndices.Count < _studentDataService.MaxNumberOfStudents)
             {
                 // Find a random index that hasn't been set yet.
-                var randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeslots);
+                var randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
                 while (tabuIndices.Contains(randomIndex))
                 {
-                    randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeslots);
+                    randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
                 }
                 tabuIndices.Add(randomIndex);
 
 
                 var validAlleles = individual.GetValidAlleles();
-                int newAllele;
 
                 if (validAlleles.Count > 0)
                 {
+                    int newAllele;
                     if (validAlleles.Count > 1)
                     {
-                        var randomValidAlleleIndex = _random.Next(1, validAlleles.Count);
+                        var randomValidAlleleIndex = _random.Next(0, validAlleles.Count);
                         newAllele = validAlleles[randomValidAlleleIndex];
                     }
                     else
@@ -94,7 +91,13 @@ namespace CS_GA.Services
             // Mutate
             for (var i = individualIndexOffset; i < population.Size; i++)
             {
-                _mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
+                // Mutate up to 7 times
+                int mutationAmount = _random.Next(7);
+
+                for (int j = 0; j < mutationAmount; j++)
+                {
+                    _mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
+                }
             }
 
             return newPopulation;
@@ -102,7 +105,7 @@ namespace CS_GA.Services
 
         private IIndividual tournamentSelection(IPopulation population)
         {
-            var tournamentPopulation = _populationFactory.CreatePopulation(5);
+            var tournamentPopulation = _populationFactory.CreatePopulation(tournamentSize);
 
             for (var i = 0; i < tournamentPopulation.Size; i++)
             {
@@ -110,27 +113,9 @@ namespace CS_GA.Services
                 tournamentPopulation.SetIndividual(i, population.GetIndividual(randomIndividualIndex));
             }
 
-            _environmentService.UpdatePopulationSuitability(ref tournamentPopulation);
+            _environmentService.UpdatePopulationSuitability(tournamentPopulation);
 
             return tournamentPopulation.MostSuitableIndividualToProblem;
-        }
-
-        private void mutate(IIndividual individual)
-        {
-            //TODO: Check mutation results in a valid solution
-
-            for (var geneIndex = 0; geneIndex < individual.GeneLength; geneIndex++)
-            {
-                // Mutate or skip
-                if (_random.NextDouble() <= mutationRate)
-                {
-                    var randomAllele = _random.Next(_studentDataService.MaxNumberOfStudents);
-
-                    individual.SetGeneValue(geneIndex, randomAllele);
-
-                    individual.SwapAlleles(geneIndex, randomAllele);
-                }
-            }
         }
     }
 

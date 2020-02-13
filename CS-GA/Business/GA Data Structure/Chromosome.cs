@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 using CS_GA.Business.Common;
 using Ninject.Infrastructure.Language;
 
 namespace CS_GA.Business.GA_Data_Structure
 {
+
     public class Chromosome : IChromosome
     {
         private readonly int[] _genes;
         public int Size { get; }
+
+        private Random _random = new Random();
 
         public Chromosome(int size)
         {
@@ -25,6 +30,17 @@ namespace CS_GA.Business.GA_Data_Structure
         public int GetGeneValue(int geneIndex)
         {
             return _genes[geneIndex];
+        }
+
+        public List<int> GetAssignedAlleles()
+        {
+
+                // Find all current assigned genes
+                List<int> genes = _genes.ToList();
+                genes.RemoveAll(allele => allele.Equals(0));
+
+                return genes;
+        
         }
 
         public bool GeneValueAlreadyAssigned(int geneValue)
@@ -52,13 +68,26 @@ namespace CS_GA.Business.GA_Data_Structure
 
             //TODO: Change this when using final data!
             //TODO: Dynamically load this data
-            var numberOfStudents = 7;
+            var numberOfStudents = 13;
 
             int[] requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
 
             bool validSolution = requiredAlleles.SequenceEqual(genesAsArray);
 
             return validSolution;
+        }
+
+        public void ReplaceRandomZeroWithAllele( int alleleToReplaceWith)
+        {
+
+            var indicesOfZeros = Enumerable.Range(0, Size)
+                .Where(i => _genes[i] == 0)
+                .ToList();
+
+
+            var randomIndex = _random.Next(indicesOfZeros.Count);
+
+            SetGeneValue(indicesOfZeros[randomIndex], alleleToReplaceWith);
         }
     }
 }

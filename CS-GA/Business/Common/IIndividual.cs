@@ -15,7 +15,7 @@ namespace CS_GA.Business.Common
 
         void ClearAllele(int allele);
         void RemoveFromTabu(int allele);
-        void SwapAlleles(int allele1Index, int allele2Value);
         bool IsAValidSolution();
+        void CrossoverValidator();
     }
 }

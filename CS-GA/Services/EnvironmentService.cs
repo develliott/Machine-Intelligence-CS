@@ -14,27 +14,38 @@ namespace CS_GA.Services
             _studentDataService = studentDataService;
         }
 
-        public int UpdateIndividualSuitability(ref IIndividual individual)
+        public void UpdateIndividualSuitability(IIndividual individual)
         {
             var fitness = 0;
+            var multiplier = 0;
 
             for (var i = 0; i < individual.GeneLength; i++)
             {
-                var studentIndex = individual.GetGeneValue(i);
+                var studentIndex = individual.GetGeneValue(i) - 1;
                 if (studentIndex != -1)
                 {
                     var timeslotIndex = i;
 
-                    fitness += _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+                    var score = _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+
+                    if (score == 10 )
+                    {
+                        multiplier += 2;
+                    }
+                    else if(score == 1)
+                    {
+                        multiplier += 1;
+                    }
+
+                    fitness += score;
                 }
             }
 
-            individual.SuitabilityToProblem = fitness;
+            individual.SuitabilityToProblem = fitness + (1 * multiplier);
 
-            return fitness;
         }
 
-        public void UpdatePopulationSuitability(ref IPopulation population)
+        public void UpdatePopulationSuitability(IPopulation population)
         {
             // Store a valid IIndividual so it's interface can be called without NullReference concerns.
             var mostSuitableIndividual = population.GetIndividual(0);
@@ -42,7 +53,7 @@ namespace CS_GA.Services
             for (var individualIndex = 0; individualIndex < population.Size; individualIndex++)
             {
                 var currentIndividual = population.GetIndividual(individualIndex);
-                UpdateIndividualSuitability(ref currentIndividual);
+                UpdateIndividualSuitability(currentIndividual);
 
                 if (currentIndividual.SuitabilityToProblem > mostSuitableIndividual.SuitabilityToProblem)
                     mostSuitableIndividual = currentIndividual;
@@ -54,7 +65,6 @@ namespace CS_GA.Services
 
     public interface IEnvironmentService
     {
-        int UpdateIndividualSuitability(ref IIndividual individual);
-        void UpdatePopulationSuitability(ref IPopulation population);
+        void UpdatePopulationSuitability(IPopulation population);
     }
 }
