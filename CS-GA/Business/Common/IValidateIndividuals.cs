@@ -4,6 +4,6 @@ namespace CS_GA.Business.Common
 {
     public interface IValidateIndividuals
     {
-        bool ValidateIndividual(IIndividual individual);
+        bool ValidateSolution(IIndividual individual);
     }
 }

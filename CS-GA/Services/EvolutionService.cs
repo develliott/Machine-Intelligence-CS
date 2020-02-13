@@ -11,6 +11,7 @@ namespace CS_GA.Services
     public class EvolutionService : IEvolutionService
     {
         private readonly bool _elitism = true;
+        private readonly IProblemDomain _problemDomain;
         private readonly IPopulationFactory _populationFactory;
 
         private readonly Random _random = new Random();
@@ -20,8 +21,9 @@ namespace CS_GA.Services
         private readonly IMutationOperator _mutationOperator;
 
 
-        public EvolutionService(IPopulationFactory populationFactory, IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator, IMutationOperator mutationOperator)
+        public EvolutionService(IProblemDomain problemDomain, IPopulationFactory populationFactory, IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator, IMutationOperator mutationOperator)
         {
+            _problemDomain = problemDomain;
             _populationFactory = populationFactory;
             _studentDataService = studentDataService;
             _crossoverOperator = crossoverOperator;
@@ -77,6 +79,8 @@ namespace CS_GA.Services
             {
                 var resultingIndividualFromCrossoverOperation =
                     _crossoverOperator.PerformCrossover(oldPopulation);
+
+                _problemDomain.EnsureValidSolutionFromCrossoverOperation(resultingIndividualFromCrossoverOperation);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }

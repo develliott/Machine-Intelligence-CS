@@ -10,6 +10,5 @@ namespace CS_GA.Business.Common.Data_Structure
         int GetGeneValue(int geneIndex);
         void SetGeneValue(int geneIndex, int value);
         List<int> GetValidAlleles();
-        void CrossoverValidator();
     }
 }

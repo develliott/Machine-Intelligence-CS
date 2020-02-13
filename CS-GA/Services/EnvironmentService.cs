@@ -20,7 +20,7 @@ namespace CS_GA.Services
 
         public bool IsSolutionValid(IIndividual individual)
         {
-            return _problemDomain.ValidateIndividual(individual);
+            return _problemDomain.ValidateSolution(individual);
         }
 
         public void UpdateIndividualSuitability(IIndividual individual)

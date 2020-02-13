@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CS_GA.Business.Common;
 using CS_GA.Business.Common.Data_Structure;
@@ -65,11 +66,9 @@ namespace CS_GA.Business.Operators
                 child.SetGeneValue(geneIndex, alleleFromParent);
             }
 
-            // TODO: Refactor validation
-            // Ensure new individual is a valid solution.
-            child.CrossoverValidator();
-
             return child;
         }
+
+
     }
 }

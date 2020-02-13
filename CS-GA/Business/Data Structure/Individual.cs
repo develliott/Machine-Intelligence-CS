@@ -43,29 +43,7 @@ namespace CS_GA.Business.Data_Structure
                 _tabuGenes.Add(value);
             }
         }
-
-        public void CrossoverValidator()
-        {
-            if (!_environmentService.IsSolutionValid(this))
-            {
-                var assignedAlleles = Chromosome.GetAssignedAlleles();
-                var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
-                var missingAlleles = allPossibleGenes.Except(assignedAlleles).ToList();
-
-                while (missingAlleles.Any())
-                {
-                    Chromosome.SetRandomUnassignedAllele(0, missingAlleles[0]);
-                    missingAlleles.Remove(missingAlleles[0]);
-                }
-            }
-
-            // TODO: Move to a test
-            if (!_environmentService.IsSolutionValid(this))
-            {
-                throw new InvalidOperationException("The solution is not valid.");
-            }
-        }
-
+        
         public void ClearAllele(int allele)
         {
             for (var geneIndex = 0; geneIndex < GeneLength; geneIndex++)

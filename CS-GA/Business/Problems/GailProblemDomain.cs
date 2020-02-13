@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CS_GA.Business.Common;
 using CS_GA.Business.Common.Data_Structure;
+using CS_GA.Business.Data_Structure;
 using CS_GA.Services;
 
 namespace CS_GA.Business.Problems
@@ -12,9 +14,10 @@ namespace CS_GA.Business.Problems
         public GailProblemDomain(IStudentDataService<int> studentDataService)
         {
             _studentDataService = studentDataService;
+
         }
 
-        public bool ValidateIndividual(IIndividual individual)
+        public bool ValidateSolution(IIndividual individual)
         {
             // Define a valid solution.
             //
@@ -32,6 +35,32 @@ namespace CS_GA.Business.Problems
             var validSolution = requiredAlleles.SequenceEqual(genesAsArray);
 
             return validSolution;
+        }
+
+        public void EnsureValidSolutionFromCrossoverOperation(IIndividual individual)
+        {
+            if (ValidateSolution(individual))
+            {
+                return;
+            }
+
+            var chromosome = individual.Chromosome;
+            var assignedAlleles = chromosome.GetAssignedAlleles();
+            var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
+            var missingAlleles = allPossibleGenes.Except(assignedAlleles).ToList();
+
+            while (missingAlleles.Any())
+            {
+                chromosome.SetRandomUnassignedAllele(0, missingAlleles[0]);
+                missingAlleles.Remove(missingAlleles[0]);
+            }
+            
+
+            // TODO: Move to a test
+            if (!ValidateSolution(individual))
+            {
+                throw new InvalidOperationException("The solution is not valid.");
+            }
         }
     }
 }
