@@ -1,4 +1,4 @@
-﻿namespace CS_GA.Business.GA_Data_Structure.Helpers
+﻿namespace CS_GA.Business.Data_Structure.Helpers
 {
     public class ChromosomeConstraint : IChromosomeConstraint
     {

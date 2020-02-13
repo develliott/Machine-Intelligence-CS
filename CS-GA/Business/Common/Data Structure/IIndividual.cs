@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CS_GA.Business.Common
+namespace CS_GA.Business.Common.Data_Structure
 {
     public interface IIndividual
     {

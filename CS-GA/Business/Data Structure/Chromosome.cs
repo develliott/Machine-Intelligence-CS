@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
-using CS_GA.Business.Common;
-using Ninject.Infrastructure.Language;
+using CS_GA.Business.Common.Data_Structure;
 
-namespace CS_GA.Business.GA_Data_Structure
+namespace CS_GA.Business.Data_Structure
 {
     public class Chromosome : IChromosome
     {

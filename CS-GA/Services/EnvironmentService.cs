@@ -1,7 +1,7 @@
 ﻿using System;
 using CS_GA.Business.Common;
+using CS_GA.Business.Common.Data_Structure;
 using CS_GA.Business.Common.Factories;
-using CS_GA.Business.GA_Data_Structure;
 
 namespace CS_GA.Services
 {

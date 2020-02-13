@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CS_GA.Business.Common;
+﻿using CS_GA.Business.Common.Data_Structure;
 
-namespace CS_GA.Business.Operators
+namespace CS_GA.Business.Common.Operators
 {
     public interface ICrossoverOperator
     {

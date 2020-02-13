@@ -1,5 +1,7 @@
 ﻿using System;
 using CS_GA.Business.Common;
+using CS_GA.Business.Common.Data_Structure;
+using CS_GA.Business.Common.Operators;
 
 namespace CS_GA.Business.Operators
 {

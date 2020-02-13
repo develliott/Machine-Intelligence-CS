@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CS_GA.Business.Common;
+using CS_GA.Business.Common.Data_Structure;
 using CS_GA.Services;
 
-namespace CS_GA.Business.GA_Data_Structure
+namespace CS_GA.Business.Data_Structure
 {
     public class Individual : IIndividual
     {
