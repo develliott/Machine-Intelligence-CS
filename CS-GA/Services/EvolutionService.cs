@@ -75,28 +75,30 @@ namespace CS_GA.Services
                 individualIndexOffset = 1;
             }
 
-            for (var i = individualIndexOffset; i < population.Size; i++)
+            for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
             {
+                // TODO: Refactor into _crossoverOperator.PerformCrossover
                 var freshIndividual = _individualFactory.CreateIndividual();
 
                 var individual1 = tournamentSelection(population);
 
                 var individual2 = tournamentSelection(population);
 
-                var crossedoverIndividual = _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
+                var resultingIndividualFromCrossoverOperation = _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
 
-                newPopulation.SetIndividual(i, crossedoverIndividual);
+                newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }
 
             // Mutate
-            for (var i = individualIndexOffset; i < population.Size; i++)
+            for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
             {
-                // Mutate up to 7 times
-                int mutationAmount = _random.Next(7);
+                // TODO: Refactor into _mutationOperator.PerformMutation
+                int maxNumberOfMutations = 7;
+                int randomMutationLimit = _random.Next(maxNumberOfMutations);
 
-                for (int j = 0; j < mutationAmount; j++)
+                for (int numberOfMutations = 0; numberOfMutations < randomMutationLimit; numberOfMutations++)
                 {
-                    _mutationOperator.PerformMutation(newPopulation.GetIndividual(i).Chromosome);
+                    _mutationOperator.PerformMutation(newPopulation.GetIndividual(individualIndex).Chromosome);
                 }
             }
 
@@ -105,6 +107,7 @@ namespace CS_GA.Services
 
         private IIndividual tournamentSelection(IPopulation population)
         {
+            //TODO: Refactor into own ISelectionStrategy
             var tournamentPopulation = _populationFactory.CreatePopulation(tournamentSize);
 
             for (var i = 0; i < tournamentPopulation.Size; i++)

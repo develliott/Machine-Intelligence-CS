@@ -6,16 +6,10 @@ namespace CS_GA.Business.Common
     {
         IChromosome Chromosome { get; }
         int GeneLength { get; }
-        int SuitabilityToProblem { get; set; }
+        int SuitabilityScore { get; set; }
         int GetGeneValue(int geneIndex);
         void SetGeneValue(int geneIndex, int value);
         List<int> GetValidAlleles();
-        void ClearTabuGenes();
-        bool IsGeneAlreadyAssigned(int geneValue);
-
-        void ClearAllele(int allele);
-        void RemoveFromTabu(int allele);
-        bool IsAValidSolution();
         void CrossoverValidator();
     }
 }

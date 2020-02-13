@@ -7,16 +7,9 @@ namespace CS_GA
 {
     public class Algorithm
     {
-        private readonly IEnvironmentService _environmentService;
-
-        public Algorithm(IEvolutionService evolutionService, IPopulationFactory populationFactory, IEnvironmentService environmentService)
+        public Algorithm(IEvolutionService evolutionService, IEnvironmentService environmentService)
         {
-            _environmentService = environmentService;
-
-            IPopulation population = populationFactory.CreatePopulation(75);
-            population.InitialisePopulation();
-            _environmentService.UpdatePopulationSuitability(population);
-
+            IPopulation population = environmentService.GenerateInitialisedPopulation(75);
 
             // Evolve our population until we reach an near-optimal solution
             var generationCount = 0;
@@ -24,7 +17,7 @@ namespace CS_GA
 
             var globalHighestScore = 0;
             var generationsWithNoChangeToScore = 0;
-            var maxGenerationsWithNoChangeToScore = 1000;
+            var maxGenerationsWithNoChangeToScore = 400;
 
             // Simulate 'maxGenerations' amount of generations, unless the score hasn't changed for 'maxGenerationsWithNoChangeToScore'.
             while (generationCount < maxGenerations &&
@@ -32,27 +25,35 @@ namespace CS_GA
             {
                 generationCount++;
                 
-                // Find the fittest individual in the current population.
-                var fittestScoreInPop = population.MostSuitableIndividualToProblem.SuitabilityToProblem;
+                var scoreOfFittestIndividual = population.MostSuitableIndividualToProblem.SuitabilityScore;
             
                 // If the score hasn't improved since the last generation ->
-                if (fittestScoreInPop == globalHighestScore)
+                if (scoreOfFittestIndividual == globalHighestScore)
                     // -> Increment 'generationsWithNoChangeToScore' by 1.
+
+                    // TODO: Check how many parts were high value assignments,
+                    //       to influence the overwriting of better assignments 
                     generationsWithNoChangeToScore++;
                 else
                     // Reset 'generationsWithNoChangeToScore' to 0.
                     generationsWithNoChangeToScore = 0;
-            
-                // If the current fittest score is more than the global highest score ->
-                if (fittestScoreInPop > globalHighestScore)
-                    // -> update the global highest score with the current fittest score.
-                    globalHighestScore = fittestScoreInPop;
-            
-                Console.WriteLine("Generation: " + generationCount + " Fittest: " + fittestScoreInPop);
-            
-                population = evolutionService.EvolvePopulation(population);
-                _environmentService.UpdatePopulationSuitability(population);
 
+                // If the 'scoreOfFittestIndividual' is more than the 'globalHighestScore' ->
+                if (scoreOfFittestIndividual > globalHighestScore)
+                    // -> update the 'globalHighestScore' with the 'scoreOfFittestIndividual'.
+                    globalHighestScore = scoreOfFittestIndividual;
+
+                // [ Purpose: To log out data less frequently.
+                //   How: Sub-sample the data by logging an update every 'subSampleRate' generations.
+                var subSampleRate = 10;
+                if (generationCount % subSampleRate == 0)
+                {
+                    Console.WriteLine($"Generation [{generationCount}] ~ Highest Fitness [{scoreOfFittestIndividual}]");
+                }
+
+                population = evolutionService.EvolvePopulation(population);
+                environmentService.UpdatePopulationSuitability(population);
+                // ]
             }
 
             Console.WriteLine("\nSolution found!");
@@ -61,10 +62,10 @@ namespace CS_GA
                 Console.WriteLine(
                     $"The score hasn't changed in {maxGenerationsWithNoChangeToScore} generations, so it has been considered an optimal solution.");
 
-            Console.WriteLine("\nGeneration: " + generationCount);
-            Console.WriteLine("Solution:");
+            Console.WriteLine("\n\nGeneration: " + generationCount);
+            Console.WriteLine("\n\nSolution\n--------");
             Console.WriteLine(population.MostSuitableIndividualToProblem);
-            Console.WriteLine("Fitness: " + population.MostSuitableIndividualToProblem.SuitabilityToProblem);
+            Console.WriteLine("\nFitness: " + population.MostSuitableIndividualToProblem.SuitabilityScore);
         }
     }
 }

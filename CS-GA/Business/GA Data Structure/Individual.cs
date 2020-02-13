@@ -16,7 +16,7 @@ namespace CS_GA.Business.GA_Data_Structure
 
         private List<int> _tabuGenes;
 
-        public int SuitabilityToProblem { get; set; }
+        public int SuitabilityScore { get; set; }
 
 
         public Individual(IStudentDataService<int> studentDataService)
@@ -43,7 +43,7 @@ namespace CS_GA.Business.GA_Data_Structure
 
                 while (missingAlleles.Any())
                 {
-                    Chromosome.ReplaceRandomZeroWithAllele(missingAlleles[0]);
+                    Chromosome.SetRandomUnassignedAllele(0, missingAlleles[0]);
                     missingAlleles.Remove(missingAlleles[0]);
                 }
             }
@@ -102,14 +102,14 @@ namespace CS_GA.Business.GA_Data_Structure
             stringBuilder.Append("Time Slot Index:  ");
             for (int i = 0; i < GeneLength; i++)
             {
-                stringBuilder.Append($"{i}  ");
+                stringBuilder.Append($"|{i}   ");
             }
 
             stringBuilder.AppendLine();
             stringBuilder.Append("Student ID:       ");
             for (int i = 0; i < GeneLength; i++)
             {
-                stringBuilder.Append($"{GetGeneValue(i)}  ");
+                stringBuilder.Append($"|{GetGeneValue(i)}   ");
             }
 
             return stringBuilder.ToString();

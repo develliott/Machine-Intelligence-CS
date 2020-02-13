@@ -40,7 +40,6 @@ namespace CS_GA.Business.GA_Data_Structure
                 genes.RemoveAll(allele => allele.Equals(0));
 
                 return genes;
-        
         }
 
         public bool GeneValueAlreadyAssigned(int geneValue)
@@ -77,17 +76,15 @@ namespace CS_GA.Business.GA_Data_Structure
             return validSolution;
         }
 
-        public void ReplaceRandomZeroWithAllele( int alleleToReplaceWith)
+        public void SetRandomUnassignedAllele( int unassignedIdentifier, int alleleToReplaceWith)
         {
-
-            var indicesOfZeros = Enumerable.Range(0, Size)
-                .Where(i => _genes[i] == 0)
+            // Find the index of every unassigned allele in the genes.
+            var indicesOfUnassignedAlleles = Enumerable.Range(0, Size)
+                .Where(allele => _genes[allele] == unassignedIdentifier)
                 .ToList();
-
-
-            var randomIndex = _random.Next(indicesOfZeros.Count);
-
-            SetGeneValue(indicesOfZeros[randomIndex], alleleToReplaceWith);
+            
+            var randomIndex = _random.Next(indicesOfUnassignedAlleles.Count);
+            SetGeneValue(indicesOfUnassignedAlleles[randomIndex], alleleToReplaceWith);
         }
     }
 }

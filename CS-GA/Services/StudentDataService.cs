@@ -7,17 +7,13 @@ namespace CS_GA.Services
     {
         private readonly dynamic[,] _csvFileData;
 
-        // Rows then Columns for index size.
+        // Knowledge Note: Rows then Columns for index size.
         private readonly T[,] _studentPreference;
-        private readonly int _maxColumnIndex;
-        private readonly int _maxRowIndex;
 
         public StudentDataService(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData)
         {
-            _maxRowIndex = maxRowIndex;
-            _maxColumnIndex = maxColumnIndex;
-            MaxNumberOfStudents = _maxRowIndex;
-            MaxNumberOfTimeSlots = _maxColumnIndex;
+            MaxNumberOfStudents = maxRowIndex;
+            MaxNumberOfTimeSlots = maxColumnIndex;
 
             _csvFileData = csvFileData;
             _studentPreference = new T[maxRowIndex, maxColumnIndex];
@@ -35,6 +31,8 @@ namespace CS_GA.Services
 
         private int ConvertStringDataToPreferenceScore(string data)
         {
+            // TODO: Refactor into environment service
+            // - think about where it belongs more.
             int preferenceScore;
             switch (data.ToLower())
             {

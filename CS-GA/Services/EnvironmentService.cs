@@ -8,10 +8,12 @@ namespace CS_GA.Services
     public class EnvironmentService : IEnvironmentService
     {
         private readonly IStudentDataService<int> _studentDataService;
+        private readonly IPopulationFactory _populationFactory;
 
-        public EnvironmentService(IStudentDataService<int> studentDataService)
+        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory)
         {
             _studentDataService = studentDataService;
+            _populationFactory = populationFactory;
         }
 
         public void UpdateIndividualSuitability(IIndividual individual)
@@ -41,8 +43,20 @@ namespace CS_GA.Services
                 }
             }
 
-            individual.SuitabilityToProblem = fitness + (1 * multiplier);
+            individual.SuitabilityScore = fitness + (1 * multiplier);
 
+        }
+
+        public IPopulation GenerateInitialisedPopulation(int size)
+        {
+            var population = _populationFactory.CreatePopulation(size);
+            
+            //TODO: Refactor - Population shouldn't have knowledge about how to initialise itself
+            population.InitialisePopulation();
+
+            UpdatePopulationSuitability(population);
+
+            return population;
         }
 
         public void UpdatePopulationSuitability(IPopulation population)
@@ -55,7 +69,7 @@ namespace CS_GA.Services
                 var currentIndividual = population.GetIndividual(individualIndex);
                 UpdateIndividualSuitability(currentIndividual);
 
-                if (currentIndividual.SuitabilityToProblem > mostSuitableIndividual.SuitabilityToProblem)
+                if (currentIndividual.SuitabilityScore > mostSuitableIndividual.SuitabilityScore)
                     mostSuitableIndividual = currentIndividual;
             }
 
@@ -66,5 +80,6 @@ namespace CS_GA.Services
     public interface IEnvironmentService
     {
         void UpdatePopulationSuitability(IPopulation population);
+        IPopulation GenerateInitialisedPopulation(int size);
     }
 }
