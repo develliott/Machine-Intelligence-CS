@@ -4,6 +4,6 @@ namespace CS_GA.Business.Common
 {
     public interface IEnsureValidSolutionFromCrossoverOperation
     {
-        void EnsureValidSolutionFromCrossoverOperation(IIndividual individual);
+        void MakeSolutionValid(IIndividual individual);
     }
 }

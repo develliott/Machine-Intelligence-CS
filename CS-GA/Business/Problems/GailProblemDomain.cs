@@ -37,7 +37,7 @@ namespace CS_GA.Business.Problems
             return validSolution;
         }
 
-        public void EnsureValidSolutionFromCrossoverOperation(IIndividual individual)
+        public void MakeSolutionValid(IIndividual individual)
         {
             if (ValidateSolution(individual))
             {

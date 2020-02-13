@@ -10,21 +10,19 @@ namespace CS_GA.Business.Data_Structure
     public class Individual : IIndividual
     {
         private readonly IStudentDataService<int> _studentDataService;
-        private readonly IEnvironmentService _environmentService;
 
         public IChromosome Chromosome { get; }
 
         public int GeneLength => Chromosome.Size;
 
-        private List<int> _tabuGenes;
+        private readonly List<int> _tabuGenes;
 
         public int SuitabilityScore { get; set; }
 
 
-        public Individual(IStudentDataService<int> studentDataService, IEnvironmentService environmentService)
+        public Individual(IStudentDataService<int> studentDataService)
         {
             _studentDataService = studentDataService;
-            _environmentService = environmentService;
 
             Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeSlots);
             _tabuGenes = new List<int>();

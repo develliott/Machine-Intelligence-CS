@@ -32,35 +32,7 @@ namespace CS_GA.Services
 
         public void SetValidIndividual(IIndividual individual)
         {
-            var tabuIndices = new List<int>();
-
-            while (tabuIndices.Count < _studentDataService.MaxNumberOfStudents)
-            {
-                // Find a random index that hasn't been set yet.
-                var randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
-                while (tabuIndices.Contains(randomIndex))
-                    randomIndex = _random.Next(_studentDataService.MaxNumberOfTimeSlots);
-                tabuIndices.Add(randomIndex);
-
-
-                var validAlleles = individual.GetValidAlleles();
-
-                if (validAlleles.Count > 0)
-                {
-                    int newAllele;
-                    if (validAlleles.Count > 1)
-                    {
-                        var randomValidAlleleIndex = _random.Next(0, validAlleles.Count);
-                        newAllele = validAlleles[randomValidAlleleIndex];
-                    }
-                    else
-                    {
-                        newAllele = validAlleles[0];
-                    }
-
-                    individual.SetGeneValue(randomIndex, newAllele);
-                }
-            }
+            _problemDomain.MakeSolutionValid(individual);
         }
 
         public IPopulation EvolvePopulation(IPopulation oldPopulation)
@@ -80,7 +52,7 @@ namespace CS_GA.Services
                 var resultingIndividualFromCrossoverOperation =
                     _crossoverOperator.PerformCrossover(oldPopulation);
 
-                _problemDomain.EnsureValidSolutionFromCrossoverOperation(resultingIndividualFromCrossoverOperation);
+                _problemDomain.MakeSolutionValid(resultingIndividualFromCrossoverOperation);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }
