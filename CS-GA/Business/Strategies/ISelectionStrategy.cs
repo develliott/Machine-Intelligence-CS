@@ -7,6 +7,6 @@ namespace CS_GA.Business.Strategies
 {
     public interface ISelectionStrategy
     {
-        IIndividual PerformSelection(IPopulation population);
+        IIndividual SelectIndividualFromPopulation(IPopulation population);
     }
 }

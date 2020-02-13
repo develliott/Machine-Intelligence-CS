@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CS_GA.Business.Common;
 using CS_GA.Business.Common.Factories;
 using CS_GA.Services;
@@ -22,15 +20,20 @@ namespace CS_GA.Business.Strategies
             _populationFactory = populationFactory;
         }
 
-        public IIndividual PerformSelection(IPopulation population)
+        /// <summary>
+        /// Finds the individual with the highest suitability from a random population sample.
+        /// </summary>
+        /// <param name="population">The population to select from</param>
+        /// <returns>The most suitable individual from the population sample</returns>
+        public IIndividual SelectIndividualFromPopulation(IPopulation population)
         {
-            //TODO: Refactor into own ISelectionStrategy
             var tournamentPopulation = _populationFactory.CreatePopulation(tournamentSize);
 
             for (var i = 0; i < tournamentPopulation.Size; i++)
             {
                 var randomIndividualIndex = _random.Next(0, population.Size);
-                tournamentPopulation.SetIndividual(i, population.GetIndividual(randomIndividualIndex));
+                var randomIndividual = population.GetIndividual(randomIndividualIndex);
+                tournamentPopulation.SetIndividual(i, randomIndividual);
             }
 
             _environmentService.UpdatePopulationSuitability(tournamentPopulation);

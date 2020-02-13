@@ -75,17 +75,11 @@ namespace CS_GA.Services
                 individualIndexOffset = 1;
             }
 
+            // Crossover
             for (var individualIndex = individualIndexOffset; individualIndex < population.Size; individualIndex++)
             {
-                // TODO: Refactor into _crossoverOperator.PerformCrossover
-                var freshIndividual = _individualFactory.CreateIndividual();
-
-                var individual1 = _selectionStrategy.PerformSelection(population);
-
-                var individual2 = _selectionStrategy.PerformSelection(population);
-
                 var resultingIndividualFromCrossoverOperation =
-                    _crossoverOperator.PerformCrossover(freshIndividual, individual1, individual2);
+                    _crossoverOperator.PerformCrossover(population);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }

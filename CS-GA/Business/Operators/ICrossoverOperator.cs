@@ -7,6 +7,7 @@ namespace CS_GA.Business.Operators
 {
     public interface ICrossoverOperator
     {
-        IIndividual PerformCrossover(IIndividual newIndividual, IIndividual individual1, IIndividual individual2);
+        IIndividual PerformCrossover(IIndividual parent1, IIndividual parent2);
+        IIndividual PerformCrossover(IPopulation population);
     }
 }
