@@ -10,6 +10,7 @@ namespace CS_GA.Business.Data_Structure
     public class Individual : IIndividual
     {
         private readonly IStudentDataService<int> _studentDataService;
+        private readonly IEnvironmentService _environmentService;
 
         public IChromosome Chromosome { get; }
 
@@ -20,9 +21,10 @@ namespace CS_GA.Business.Data_Structure
         public int SuitabilityScore { get; set; }
 
 
-        public Individual(IStudentDataService<int> studentDataService)
+        public Individual(IStudentDataService<int> studentDataService, IEnvironmentService environmentService)
         {
             _studentDataService = studentDataService;
+            _environmentService = environmentService;
 
             Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeSlots);
             _tabuGenes = new List<int>();
@@ -42,14 +44,9 @@ namespace CS_GA.Business.Data_Structure
             }
         }
 
-        public bool IsAValidSolution()
-        {
-            return Chromosome.IsAValidSolution();
-        }
-
         public void CrossoverValidator()
         {
-            if (!IsAValidSolution())
+            if (!_environmentService.IsSolutionValid(this))
             {
                 var assignedAlleles = Chromosome.GetAssignedAlleles();
                 var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
@@ -62,8 +59,8 @@ namespace CS_GA.Business.Data_Structure
                 }
             }
 
-            // TODO: Move to test
-            if (!IsAValidSolution())
+            // TODO: Move to a test
+            if (!_environmentService.IsSolutionValid(this))
             {
                 throw new InvalidOperationException("The solution is not valid.");
             }

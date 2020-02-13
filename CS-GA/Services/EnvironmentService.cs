@@ -9,11 +9,18 @@ namespace CS_GA.Services
     {
         private readonly IStudentDataService<int> _studentDataService;
         private readonly IPopulationFactory _populationFactory;
+        private readonly IProblemDomain _problemDomain;
 
-        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory)
+        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory, IProblemDomain problemDomain)
         {
             _studentDataService = studentDataService;
             _populationFactory = populationFactory;
+            _problemDomain = problemDomain;
+        }
+
+        public bool IsSolutionValid(IIndividual individual)
+        {
+            return _problemDomain.ValidateIndividual(individual);
         }
 
         public void UpdateIndividualSuitability(IIndividual individual)
@@ -75,5 +82,6 @@ namespace CS_GA.Services
     {
         void UpdatePopulationSuitability(IPopulation population);
         IPopulation GenerateInitialisedPopulation(int size);
+        bool IsSolutionValid(IIndividual individual);
     }
 }

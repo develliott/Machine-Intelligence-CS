@@ -9,7 +9,7 @@ namespace CS_GA.Business.Data_Structure
     {
         public int Size { get; }
         private readonly int[] _genes;
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
 
         public Chromosome(int size)
         {
@@ -28,6 +28,11 @@ namespace CS_GA.Business.Data_Structure
             return _genes[geneIndex];
         }
 
+        public int[] GetGenes()
+        {
+            return _genes;
+        }
+
         public List<int> GetAssignedAlleles()
         {
             // Find all current assigned genes
@@ -40,29 +45,6 @@ namespace CS_GA.Business.Data_Structure
         public bool GeneValueAlreadyAssigned(int geneValue)
         {
             return _genes.ToList().Exists(gene => gene.Equals(geneValue));
-        }
-
-        public bool IsAValidSolution()
-        {
-            // Define a valid solution.
-            //
-            // 0 = Unassigned Time Slot
-            // Each student must be assigned 1 time.
-
-            var genes = _genes.ToList();
-            genes.RemoveAll(allele => allele.Equals(0));
-            genes.Sort();
-            var genesAsArray = genes.ToArray();
-
-            //TODO: Change this when using final data!
-            //TODO: Dynamically load this data
-            var numberOfStudents = 13;
-
-            var requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
-
-            var validSolution = requiredAlleles.SequenceEqual(genesAsArray);
-
-            return validSolution;
         }
 
         public void SetRandomUnassignedAllele(int unassignedIdentifier, int alleleToReplaceWith)

@@ -7,8 +7,8 @@ namespace CS_GA.Business.Common.Data_Structure
         int Size { get; }
         void SetGeneValue(int geneIndex, int value);
         int GetGeneValue(int geneIndex);
-        bool IsAValidSolution();
         List<int> GetAssignedAlleles();
         void SetRandomUnassignedAllele(int unassignedIdentifier, int valueToReplaceWith);
+        int[] GetGenes();
     }
 }
