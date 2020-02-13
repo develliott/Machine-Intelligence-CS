@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CS_GA.Business.Common.Data_Structure;
@@ -27,6 +28,20 @@ namespace CS_GA.Business.Data_Structure
             _tabuGenes = new List<int>();
         }
 
+        public int GetGeneValue(int geneIndex)
+        {
+            return Chromosome.GetGeneValue(geneIndex);
+        }
+
+        public void SetGeneValue(int geneIndex, int value)
+        {
+            if (!_tabuGenes.Contains(value))
+            {
+                Chromosome.SetGeneValue(geneIndex, value);
+                _tabuGenes.Add(value);
+            }
+        }
+
         public bool IsAValidSolution()
         {
             return Chromosome.IsAValidSolution();
@@ -47,23 +62,10 @@ namespace CS_GA.Business.Data_Structure
                 }
             }
 
+            // TODO: Move to test
             if (!IsAValidSolution())
             {
-                var s = 5;
-            }
-        }
-
-        public int GetGeneValue(int geneIndex)
-        {
-            return Chromosome.GetGeneValue(geneIndex);
-        }
-
-        public void SetGeneValue(int geneIndex, int value)
-        {
-            if (!_tabuGenes.Contains(value))
-            {
-                Chromosome.SetGeneValue(geneIndex, value);
-                _tabuGenes.Add(value);
+                throw new InvalidOperationException("The solution is not valid.");
             }
         }
 

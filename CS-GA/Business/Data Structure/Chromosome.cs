@@ -7,15 +7,14 @@ namespace CS_GA.Business.Data_Structure
 {
     public class Chromosome : IChromosome
     {
-        private readonly int[] _genes;
         public int Size { get; }
-
+        private readonly int[] _genes;
         private Random _random = new Random();
 
         public Chromosome(int size)
         {
             Size = size;
-            _genes = new int[Size];
+            _genes = new int[size];
         }
 
 
@@ -41,12 +40,6 @@ namespace CS_GA.Business.Data_Structure
         public bool GeneValueAlreadyAssigned(int geneValue)
         {
             return _genes.ToList().Exists(gene => gene.Equals(geneValue));
-        }
-
-        public void InitialiseChromosome(int outOfRangeValue)
-        {
-            for (var geneIndex = 0; geneIndex < Size; geneIndex++)
-                SetGeneValue(geneIndex, outOfRangeValue);
         }
 
         public bool IsAValidSolution()
