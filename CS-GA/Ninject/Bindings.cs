@@ -1,6 +1,5 @@
 ﻿using CS_GA.Business.Data_Structure;
 using CS_GA.Business.Operators;
-using CS_GA.Business.Problems;
 using CS_GA.Business.Strategies;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
@@ -36,10 +35,7 @@ namespace CS_GA.Ninject
                 .WithConstructorArgument("maxColumnIndex", csvHelper.MaxColumnIndex)
                 .WithConstructorArgument("csvFileData", csvHelper.GetCsvFileData());
             Kernel.Bind<IEnvironmentService>().To<EnvironmentService>().InSingletonScope();
-
-            // - Problem Services
-            Kernel.Bind<IProblemService>().To<ProblemService>().InSingletonScope();
-            Kernel.Bind<IProblemDomain>().To<GailProblemDomain>().InSingletonScope()
+            Kernel.Bind<IProblemService>().To<GailProblemService>().InSingletonScope()
                 .WithConstructorArgument("maxNumberOfStudents", csvHelper.MaxRowIndex);
 
             // Define Strategies and Operators
