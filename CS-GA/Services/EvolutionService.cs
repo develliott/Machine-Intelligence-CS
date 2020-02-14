@@ -12,18 +12,18 @@ namespace CS_GA.Services
         private readonly ICrossoverOperator _crossoverOperator;
         private readonly bool _elitism = true;
         private readonly IMutationOperator _mutationOperator;
+        private readonly IProblemService _problemService;
         private readonly IPopulationFactory _populationFactory;
-        private readonly IProblemDomain _problemDomain;
 
         private readonly Random _random = new Random();
         private readonly IStudentDataService<int> _studentDataService;
 
 
-        public EvolutionService(IProblemDomain problemDomain, IPopulationFactory populationFactory,
+        public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory,
             IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator,
             IMutationOperator mutationOperator)
         {
-            _problemDomain = problemDomain;
+            _problemService = problemService;
             _populationFactory = populationFactory;
             _studentDataService = studentDataService;
             _crossoverOperator = crossoverOperator;
@@ -32,7 +32,7 @@ namespace CS_GA.Services
 
         public void SetValidIndividual(IIndividual individual)
         {
-            _problemDomain.MakeSolutionValid(individual);
+            _problemService.MakeSolutionValid(individual);
         }
 
         public IPopulation EvolvePopulation(IPopulation oldPopulation)
@@ -52,7 +52,7 @@ namespace CS_GA.Services
                 var resultingIndividualFromCrossoverOperation =
                     _crossoverOperator.PerformCrossover(oldPopulation);
 
-                _problemDomain.MakeSolutionValid(resultingIndividualFromCrossoverOperation);
+                _problemService.MakeSolutionValid(resultingIndividualFromCrossoverOperation);
 
                 newPopulation.SetIndividual(individualIndex, resultingIndividualFromCrossoverOperation);
             }

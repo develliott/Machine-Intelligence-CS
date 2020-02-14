@@ -37,6 +37,8 @@ namespace CS_GA.Ninject
                 .WithConstructorArgument("csvFileData", csvHelper.GetCsvFileData());
             Kernel.Bind<IEnvironmentService>().To<EnvironmentService>().InSingletonScope();
 
+            // - Problem Services
+            Kernel.Bind<IProblemService>().To<ProblemService>().InSingletonScope();
             Kernel.Bind<IProblemDomain>().To<GailProblemDomain>().InSingletonScope();
 
             // Define Strategies and Operators

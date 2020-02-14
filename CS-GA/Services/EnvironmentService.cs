@@ -8,20 +8,20 @@ namespace CS_GA.Services
     public class EnvironmentService : IEnvironmentService
     {
         private readonly IPopulationFactory _populationFactory;
-        private readonly IProblemDomain _problemDomain;
+        private readonly IProblemService _problemService;
         private readonly IStudentDataService<int> _studentDataService;
 
         public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory,
-            IProblemDomain problemDomain)
+            IProblemService problemService)
         {
             _studentDataService = studentDataService;
             _populationFactory = populationFactory;
-            _problemDomain = problemDomain;
+            _problemService = problemService;
         }
 
         public bool IsSolutionValid(IIndividual individual)
         {
-            return _problemDomain.ValidateSolution(individual);
+            return _problemService.ValidateSolution(individual);
         }
 
         public IPopulation GenerateInitialisedPopulation(int size)
