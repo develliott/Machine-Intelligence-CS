@@ -6,15 +6,15 @@ namespace CS_GA.Business.Data_Structure
 {
     public class Population : IPopulation
     {
-        private readonly IEvolutionService _evolutionService;
 
         private readonly IIndividualFactory _individualFactory;
+        private readonly IProblemService _problemService;
 
-        public Population(int size, IIndividualFactory individualFactory, IEvolutionService evolutionService)
+        public Population(int size, IIndividualFactory individualFactory, IProblemService problemService)
         {
             Size = size;
             _individualFactory = individualFactory;
-            _evolutionService = evolutionService;
+            _problemService = problemService;
 
             Individuals = new IIndividual[Size];
         }
@@ -28,7 +28,7 @@ namespace CS_GA.Business.Data_Structure
             for (var individualIndex = 0; individualIndex < Size; individualIndex++)
             {
                 var individual = _individualFactory.CreateIndividual();
-                _evolutionService.SetValidIndividual(individual);
+                _problemService.MakeSolutionValid(individual);
                 Individuals[individualIndex] = individual;
             }
         }

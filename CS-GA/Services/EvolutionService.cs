@@ -15,23 +15,15 @@ namespace CS_GA.Services
         private readonly IProblemService _problemService;
 
         private readonly Random _random = new Random();
-        private readonly IStudentDataService<int> _studentDataService;
 
 
-        public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory,
-            IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator,
+        public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory, ICrossoverOperator crossoverOperator,
             IMutationOperator mutationOperator)
         {
             _problemService = problemService;
             _populationFactory = populationFactory;
-            _studentDataService = studentDataService;
             _crossoverOperator = crossoverOperator;
             _mutationOperator = mutationOperator;
-        }
-
-        public void SetValidIndividual(IIndividual individual)
-        {
-            _problemService.MakeSolutionValid(individual);
         }
 
         public IPopulation EvolvePopulation(IPopulation oldPopulation)
