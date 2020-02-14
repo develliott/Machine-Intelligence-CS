@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CS_GA.Business.Common;
-using CS_GA.Business.Common.Data_Structure;
-using CS_GA.Business.Common.Factories;
-using CS_GA.Business.Common.Operators;
-using CS_GA.Business.Common.Strategies;
 using CS_GA.Business.Strategies;
+using CS_GA.Common.IData_Structure;
+using CS_GA.Common.IFactories;
+using CS_GA.Common.IOperators;
+using CS_GA.Common.IStrategies;
 
 namespace CS_GA.Business.Operators
 {

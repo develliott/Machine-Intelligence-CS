@@ -1,6 +1,4 @@
 ﻿using System;
-using CS_GA.Business.Common;
-using CS_GA.Business.Common.Factories;
 using CS_GA.Ninject;
 using Ninject;
 using Ninject.Parameters;

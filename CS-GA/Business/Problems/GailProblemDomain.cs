@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using CS_GA.Business.Common;
-using CS_GA.Business.Common.Data_Structure;
 using CS_GA.Business.Data_Structure;
+using CS_GA.Common.IData_Structure;
+using CS_GA.Common.IProblems;
 using CS_GA.Services;
 
 namespace CS_GA.Business.Problems

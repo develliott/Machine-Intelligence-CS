@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using CS_GA.Business.Common;
-using CS_GA.Business.Common.Data_Structure;
-using CS_GA.Business.Common.Factories;
-using CS_GA.Business.Common.Operators;
 using CS_GA.Business.Operators;
+using CS_GA.Common.IData_Structure;
+using CS_GA.Common.IFactories;
+using CS_GA.Common.IOperators;
+using CS_GA.Common.IProblems;
 
 namespace CS_GA.Services
 {

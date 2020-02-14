@@ -1,6 +1,6 @@
-﻿using CS_GA.Business.Common.Data_Structure;
+﻿using CS_GA.Common.IData_Structure;
 
-namespace CS_GA.Business.Common.Strategies
+namespace CS_GA.Common.IStrategies
 {
     public interface ISelectionStrategy
     {

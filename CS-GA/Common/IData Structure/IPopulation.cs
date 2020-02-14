@@ -1,4 +1,4 @@
-﻿namespace CS_GA.Business.Common.Data_Structure
+﻿namespace CS_GA.Common.IData_Structure
 {
     public interface IPopulation
     {
