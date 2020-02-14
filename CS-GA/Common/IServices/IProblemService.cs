@@ -2,7 +2,7 @@
 
 namespace CS_GA.Common.IServices
 {
-    public interface IProblemService : IProblemDomain
+    public interface IProblemService : IValidateIndividuals, IMakeSolutionValid, IConvertCsvDataToScore
     {
     }
 }

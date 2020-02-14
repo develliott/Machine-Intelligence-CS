@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using CS_GA.Common.IData_Structure;
-using CS_GA.Common.IProblems;
+using CS_GA.Common.IServices;
 
-namespace CS_GA.Business.Problems
+namespace CS_GA.Services
 {
-    public class GailProblemDomain : IProblemDomain
+    public class GailProblemService : IProblemService
     {
         private readonly int _maxNumberOfStudents;
 
-        public GailProblemDomain(int maxNumberOfStudents)
+        public GailProblemService(int maxNumberOfStudents)
         {
             _maxNumberOfStudents = maxNumberOfStudents;
         }
