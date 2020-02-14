@@ -2,17 +2,16 @@
 using System.Linq;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IProblems;
-using CS_GA.Common.IServices;
 
 namespace CS_GA.Business.Problems
 {
     public class GailProblemDomain : IProblemDomain
     {
-        private readonly IStudentDataService<int> _studentDataService;
+        private readonly int _maxNumberOfStudents;
 
-        public GailProblemDomain(IStudentDataService<int> studentDataService)
+        public GailProblemDomain(int maxNumberOfStudents)
         {
-            _studentDataService = studentDataService;
+            _maxNumberOfStudents = maxNumberOfStudents;
         }
 
         public bool ValidateSolution(IIndividual individual)
@@ -27,12 +26,32 @@ namespace CS_GA.Business.Problems
             genes.Sort();
             var genesAsArray = genes.ToArray();
 
-            var numberOfStudents = _studentDataService.MaxNumberOfStudents;
-            var requiredAlleles = Enumerable.Range(1, numberOfStudents).ToArray();
+            var requiredAlleles = Enumerable.Range(1, _maxNumberOfStudents).ToArray();
 
             var validSolution = requiredAlleles.SequenceEqual(genesAsArray);
 
             return validSolution;
+        }
+
+        public int ConvertCsvDataToScore(string data)
+        {
+            int preferenceScore;
+            switch (data.ToLower())
+            {
+                case "no":
+                    preferenceScore = -50;
+                    break;
+                case "ok":
+                    preferenceScore = 1;
+                    break;
+                case "pref":
+                    preferenceScore = 10;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            return preferenceScore;
         }
 
         public void MakeSolutionValid(IIndividual individual)
@@ -41,7 +60,7 @@ namespace CS_GA.Business.Problems
 
             var chromosome = individual.Chromosome;
             var assignedAlleles = chromosome.GetAssignedAlleles();
-            var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
+            var allPossibleGenes = Enumerable.Range(1, _maxNumberOfStudents);
             var missingAlleles = allPossibleGenes.Except(assignedAlleles).ToList();
 
             while (missingAlleles.Any())

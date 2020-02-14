@@ -39,7 +39,8 @@ namespace CS_GA.Ninject
 
             // - Problem Services
             Kernel.Bind<IProblemService>().To<ProblemService>().InSingletonScope();
-            Kernel.Bind<IProblemDomain>().To<GailProblemDomain>().InSingletonScope();
+            Kernel.Bind<IProblemDomain>().To<GailProblemDomain>().InSingletonScope()
+                .WithConstructorArgument("maxNumberOfStudents", csvHelper.MaxRowIndex);
 
             // Define Strategies and Operators
             Kernel.Bind<ISelectionStrategy>().To<TournamentSelection>().InSingletonScope();

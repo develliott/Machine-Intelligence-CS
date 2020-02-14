@@ -22,5 +22,10 @@ namespace CS_GA.Services
         {
             _problemDomain.MakeSolutionValid(individual);
         }
+
+        public int ConvertCsvDataToScore(string data)
+        {
+            return _problemDomain.ConvertCsvDataToScore(data);
+        }
     }
 }

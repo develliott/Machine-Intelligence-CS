@@ -6,6 +6,6 @@ namespace CS_GA.Common.IServices
     {
         void UpdatePopulationSuitability(IPopulation population);
         IPopulation GenerateInitialisedPopulation(int size);
-        bool IsSolutionValid(IIndividual individual);
+        int GetIndividualScore(int studentIndex, int timeSlotIndex);
     }
 }

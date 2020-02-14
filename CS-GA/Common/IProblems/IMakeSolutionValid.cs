@@ -2,7 +2,7 @@
 
 namespace CS_GA.Common.IProblems
 {
-    public interface IEnsureValidSolutionFromCrossoverOperation
+    public interface IMakeSolutionValid
     {
         void MakeSolutionValid(IIndividual individual);
     }

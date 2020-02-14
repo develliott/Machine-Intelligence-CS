@@ -1,6 +1,5 @@
 ﻿using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
-using CS_GA.Common.IProblems;
 using CS_GA.Common.IServices;
 
 namespace CS_GA.Services
@@ -8,20 +7,12 @@ namespace CS_GA.Services
     public class EnvironmentService : IEnvironmentService
     {
         private readonly IPopulationFactory _populationFactory;
-        private readonly IProblemService _problemService;
         private readonly IStudentDataService<int> _studentDataService;
 
-        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory,
-            IProblemService problemService)
+        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory)
         {
             _studentDataService = studentDataService;
             _populationFactory = populationFactory;
-            _problemService = problemService;
-        }
-
-        public bool IsSolutionValid(IIndividual individual)
-        {
-            return _problemService.ValidateSolution(individual);
         }
 
         public IPopulation GenerateInitialisedPopulation(int size)
@@ -53,6 +44,11 @@ namespace CS_GA.Services
             population.MostSuitableIndividualToProblem = mostSuitableIndividual;
         }
 
+        public int GetIndividualScore(int studentIndex, int timeSlotIndex)
+        {
+            return _studentDataService.GetStudentPreference(studentIndex, timeSlotIndex);
+        }
+
         public void UpdateIndividualSuitability(IIndividual individual)
         {
             var fitness = 0;
@@ -65,7 +61,7 @@ namespace CS_GA.Services
                 {
                     var timeslotIndex = i;
 
-                    var score = _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+                    var score = GetIndividualScore(studentIndex, timeslotIndex);
 
                     if (score == 10)
                         multiplier += 2;

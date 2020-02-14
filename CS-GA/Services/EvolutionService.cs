@@ -2,7 +2,6 @@
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IOperators;
-using CS_GA.Common.IProblems;
 using CS_GA.Common.IServices;
 
 namespace CS_GA.Services
@@ -12,8 +11,8 @@ namespace CS_GA.Services
         private readonly ICrossoverOperator _crossoverOperator;
         private readonly bool _elitism = true;
         private readonly IMutationOperator _mutationOperator;
-        private readonly IProblemService _problemService;
         private readonly IPopulationFactory _populationFactory;
+        private readonly IProblemService _problemService;
 
         private readonly Random _random = new Random();
         private readonly IStudentDataService<int> _studentDataService;

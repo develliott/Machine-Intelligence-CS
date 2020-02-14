@@ -7,16 +7,19 @@ namespace CS_GA.Services
     public class StudentDataService<T> : IStudentDataService<T>
     {
         private readonly dynamic[,] _csvFileData;
+        private readonly IProblemService _problemService;
 
         // Knowledge Note: Rows then Columns for index size.
         private readonly T[,] _studentPreference;
 
-        public StudentDataService(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData)
+        public StudentDataService(int maxRowIndex, int maxColumnIndex, dynamic[,] csvFileData,
+            IProblemService problemService)
         {
             MaxNumberOfStudents = maxRowIndex;
             MaxNumberOfTimeSlots = maxColumnIndex;
 
             _csvFileData = csvFileData;
+            _problemService = problemService;
             _studentPreference = new T[maxRowIndex, maxColumnIndex];
 
             TypeOfData = typeof(T);
@@ -34,36 +37,12 @@ namespace CS_GA.Services
             return _studentPreference[studentIndex, timeSlotIndex];
         }
 
-
-        private int ConvertStringDataToPreferenceScore(string data)
-        {
-            // TODO: Refactor into environment service
-            // - think about where it belongs more.
-            int preferenceScore;
-            switch (data.ToLower())
-            {
-                case "no":
-                    preferenceScore = -50;
-                    break;
-                case "ok":
-                    preferenceScore = 1;
-                    break;
-                case "pref":
-                    preferenceScore = 10;
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-
-            return preferenceScore;
-        }
-
         private void SetStudentPreference()
         {
             for (var currentRowIndex = 0; currentRowIndex < MaxNumberOfStudents; currentRowIndex++)
             for (var currentColumnIndex = 0; currentColumnIndex < MaxNumberOfTimeSlots; currentColumnIndex++)
                 _studentPreference[currentRowIndex, currentColumnIndex] =
-                    ConvertStringDataToPreferenceScore(_csvFileData[currentRowIndex, currentColumnIndex]);
+                    _problemService.ConvertCsvDataToScore(_csvFileData[currentRowIndex, currentColumnIndex]);
         }
 
         public T[] GetStudentData(int studentIndex)
