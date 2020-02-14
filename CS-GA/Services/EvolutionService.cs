@@ -14,9 +14,6 @@ namespace CS_GA.Services
         private readonly IPopulationFactory _populationFactory;
         private readonly IProblemService _problemService;
 
-        private readonly Random _random = new Random();
-
-
         public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory, ICrossoverOperator crossoverOperator,
             IMutationOperator mutationOperator)
         {

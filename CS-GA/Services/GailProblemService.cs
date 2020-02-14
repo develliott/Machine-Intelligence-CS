@@ -35,21 +35,13 @@ namespace CS_GA.Services
 
         public int ConvertCsvDataToScore(string data)
         {
-            int preferenceScore;
-            switch (data.ToLower())
+            var preferenceScore = data.ToLower() switch
             {
-                case "no":
-                    preferenceScore = -50;
-                    break;
-                case "ok":
-                    preferenceScore = 1;
-                    break;
-                case "pref":
-                    preferenceScore = 10;
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
+                "no" => -50,
+                "ok" => 1,
+                "pref" => 10,
+                _ => throw new InvalidOperationException()
+            };
 
             return preferenceScore;
         }

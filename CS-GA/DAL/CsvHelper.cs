@@ -37,29 +37,27 @@ namespace CS_GA.DAL
         /// </summary>
         private void SetCsvFileData()
         {
-            using (var fileReader = new StreamReader(_filePath))
+            using var fileReader = new StreamReader(_filePath);
+            var currentRowIndex = 0;
+
+            if (_ignoreFirstRow)
+                // Move the reader onto the next line of the file.
+                fileReader.ReadLine();
+
+            while (!fileReader.EndOfStream)
             {
-                var currentRowIndex = 0;
+                var fileLine = fileReader.ReadLine() ?? throw new ArgumentNullException("fileReader.ReadLine()");
 
-                if (_ignoreFirstRow)
-                    // Move the reader onto the next line of the file.
-                    fileReader.ReadLine();
+                var offset = _ignoreFirstColumn ? 1 : 0;
+                var fileLineElements = fileLine.Split(_delimiter).Skip(offset).ToArray();
 
-                while (!fileReader.EndOfStream)
-                {
-                    var fileLine = fileReader.ReadLine() ?? throw new ArgumentNullException("fileReader.ReadLine()");
+                for (var currentColumnIndex = 0;
+                    currentColumnIndex < fileLineElements.Count();
+                    currentColumnIndex++)
+                    _csvFileData[currentRowIndex, currentColumnIndex] =
+                        (T) (object) fileLineElements[currentColumnIndex];
 
-                    var offset = _ignoreFirstColumn ? 1 : 0;
-                    var fileLineElements = fileLine.Split(_delimiter).Skip(offset).ToArray();
-
-                    for (var currentColumnIndex = 0;
-                        currentColumnIndex < fileLineElements.Count();
-                        currentColumnIndex++)
-                        _csvFileData[currentRowIndex, currentColumnIndex] =
-                            (T) (object) fileLineElements[currentColumnIndex];
-
-                    currentRowIndex++;
-                }
+                currentRowIndex++;
             }
         }
 
