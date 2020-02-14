@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CS_GA.Common.IServices;
 
 namespace CS_GA.Services
 {
@@ -71,13 +72,5 @@ namespace CS_GA.Services
         {
             return _studentPreference[studentIndex, timeSlotIndex];
         }
-    }
-
-    public interface IStudentDataService<out T>
-    {
-        int MaxNumberOfStudents { get; }
-        int MaxNumberOfTimeSlots { get; }
-        Type TypeOfData { get; }
-        T GetStudentPreference(int studentIndex, int timeSlotIndex);
     }
 }

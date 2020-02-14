@@ -3,6 +3,7 @@ using System.Linq;
 using CS_GA.Business.Data_Structure;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IProblems;
+using CS_GA.Common.IServices;
 using CS_GA.Services;
 
 namespace CS_GA.Business.Problems

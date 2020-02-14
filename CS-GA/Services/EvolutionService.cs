@@ -5,6 +5,7 @@ using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IOperators;
 using CS_GA.Common.IProblems;
+using CS_GA.Common.IServices;
 
 namespace CS_GA.Services
 {
@@ -67,11 +68,5 @@ namespace CS_GA.Services
 
             return newPopulation;
         }
-    }
-
-    public interface IEvolutionService
-    {
-        void SetValidIndividual(IIndividual individual);
-        IPopulation EvolvePopulation(IPopulation oldPopulation);
     }
 }

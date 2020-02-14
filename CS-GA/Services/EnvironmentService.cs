@@ -2,6 +2,7 @@
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IProblems;
+using CS_GA.Common.IServices;
 
 namespace CS_GA.Services
 {
@@ -76,12 +77,5 @@ namespace CS_GA.Services
 
             population.MostSuitableIndividualToProblem = mostSuitableIndividual;
         }
-    }
-
-    public interface IEnvironmentService
-    {
-        void UpdatePopulationSuitability(IPopulation population);
-        IPopulation GenerateInitialisedPopulation(int size);
-        bool IsSolutionValid(IIndividual individual);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
+using CS_GA.Common.IServices;
 using CS_GA.Common.IStrategies;
 using CS_GA.Services;
 
