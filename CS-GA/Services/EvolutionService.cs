@@ -1,5 +1,4 @@
-﻿using System;
-using CS_GA.Common.IData_Structure;
+﻿using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IOperators;
 using CS_GA.Common.IServices;
@@ -14,7 +13,8 @@ namespace CS_GA.Services
         private readonly IPopulationFactory _populationFactory;
         private readonly IProblemService _problemService;
 
-        public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory, ICrossoverOperator crossoverOperator,
+        public EvolutionService(IProblemService problemService, IPopulationFactory populationFactory,
+            ICrossoverOperator crossoverOperator,
             IMutationOperator mutationOperator)
         {
             _problemService = problemService;
