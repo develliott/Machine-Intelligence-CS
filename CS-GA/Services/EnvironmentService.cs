@@ -18,8 +18,6 @@ namespace CS_GA.Services
         public IPopulation GenerateInitialisedPopulation(int size)
         {
             var population = _populationFactory.CreatePopulation(size);
-
-            //TODO: Refactor - Population shouldn't have knowledge about how to initialise itself
             population.InitialisePopulation();
 
             UpdatePopulationSuitability(population);
