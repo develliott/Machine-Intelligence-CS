@@ -9,6 +9,7 @@ using CS_GA.Common.IServices;
 using CS_GA.Common.IStrategies;
 using CS_GA.DAL;
 using CS_GA.Services;
+using CS_GA.Services.ProblemServices;
 using Ninject;
 using Ninject.Extensions.Factory;
 using Ninject.Modules;

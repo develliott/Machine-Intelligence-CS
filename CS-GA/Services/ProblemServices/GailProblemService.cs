@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CS_GA.Common.IData_Structure;
-using CS_GA.Common.IServices;
 
-namespace CS_GA.Services
+namespace CS_GA.Services.ProblemServices
 {
-    public class GailProblemService : IProblemService
+    public class GailProblemService : ProblemServiceBase
     {
         private readonly int _maxNumberOfStudents;
 
@@ -14,7 +15,7 @@ namespace CS_GA.Services
             _maxNumberOfStudents = maxNumberOfStudents;
         }
 
-        public bool ValidateSolution(IIndividual individual)
+        public override bool ValidateSolution(IIndividual individual)
         {
             // Define a valid solution.
             //
@@ -33,7 +34,7 @@ namespace CS_GA.Services
             return validSolution;
         }
 
-        public int ConvertCsvDataToScore(string data)
+        public override int ConvertCsvDataToScore(string data)
         {
             var preferenceScore = data.ToLower() switch
             {
@@ -46,7 +47,7 @@ namespace CS_GA.Services
             return preferenceScore;
         }
 
-        public void MakeSolutionValid(IIndividual individual)
+        public override void MakeSolutionValid(IIndividual individual)
         {
             if (ValidateSolution(individual)) return;
 
