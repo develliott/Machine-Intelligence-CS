@@ -6,9 +6,8 @@ namespace CS_GA.Business.Operators
 {
     public class SwapMutationOperator : IMutationOperator
     {
+        private readonly int _maxNumberOfMutations = 7;
         private readonly Random _random = new Random();
-
-        private int _maxNumberOfMutations = 7;
 
         public IChromosome PerformMutation(IChromosome chromosome)
         {

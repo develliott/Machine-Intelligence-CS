@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IServices;
-using CS_GA.Services;
 
 namespace CS_GA.Business.Data_Structure
 {
@@ -12,13 +10,7 @@ namespace CS_GA.Business.Data_Structure
     {
         private readonly IStudentDataService<int> _studentDataService;
 
-        public IChromosome Chromosome { get; }
-
-        public int GeneLength => Chromosome.Size;
-
         private readonly List<int> _tabuGenes;
-
-        public int SuitabilityScore { get; set; }
 
 
         public Individual(IStudentDataService<int> studentDataService)
@@ -28,6 +20,12 @@ namespace CS_GA.Business.Data_Structure
             Chromosome = new Chromosome(studentDataService.MaxNumberOfTimeSlots);
             _tabuGenes = new List<int>();
         }
+
+        public IChromosome Chromosome { get; }
+
+        public int GeneLength => Chromosome.Size;
+
+        public int SuitabilityScore { get; set; }
 
         public int GetGeneValue(int geneIndex)
         {
@@ -42,19 +40,19 @@ namespace CS_GA.Business.Data_Structure
                 _tabuGenes.Add(value);
             }
         }
-        
-        public void ClearAllele(int allele)
-        {
-            for (var geneIndex = 0; geneIndex < GeneLength; geneIndex++)
-                if (Chromosome.GetGeneValue(geneIndex) == allele)
-                    Chromosome.SetGeneValue(geneIndex, -1);
-        }
 
         public List<int> GetValidAlleles()
         {
             var allPossibleGenes = Enumerable.Range(1, _studentDataService.MaxNumberOfStudents);
             var validGenes = allPossibleGenes.Except(_tabuGenes);
             return validGenes.ToList();
+        }
+
+        public void ClearAllele(int allele)
+        {
+            for (var geneIndex = 0; geneIndex < GeneLength; geneIndex++)
+                if (Chromosome.GetGeneValue(geneIndex) == allele)
+                    Chromosome.SetGeneValue(geneIndex, -1);
         }
 
         public bool IsGeneAlreadyAssigned(int geneValue)

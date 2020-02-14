@@ -1,5 +1,4 @@
-﻿using System;
-using CS_GA.Common.IData_Structure;
+﻿using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IProblems;
 using CS_GA.Common.IServices;
@@ -8,11 +7,12 @@ namespace CS_GA.Services
 {
     public class EnvironmentService : IEnvironmentService
     {
-        private readonly IStudentDataService<int> _studentDataService;
         private readonly IPopulationFactory _populationFactory;
         private readonly IProblemDomain _problemDomain;
+        private readonly IStudentDataService<int> _studentDataService;
 
-        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory, IProblemDomain problemDomain)
+        public EnvironmentService(IStudentDataService<int> studentDataService, IPopulationFactory populationFactory,
+            IProblemDomain problemDomain)
         {
             _studentDataService = studentDataService;
             _populationFactory = populationFactory;
@@ -22,31 +22,6 @@ namespace CS_GA.Services
         public bool IsSolutionValid(IIndividual individual)
         {
             return _problemDomain.ValidateSolution(individual);
-        }
-
-        public void UpdateIndividualSuitability(IIndividual individual)
-        {
-            var fitness = 0;
-            var multiplier = 0;
-
-            for (var i = 0; i < individual.GeneLength; i++)
-            {
-                var studentIndex = individual.GetGeneValue(i) - 1;
-                if (studentIndex != -1)
-                {
-                    var timeslotIndex = i;
-
-                    var score = _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
-
-                    if (score == 10)
-                        multiplier += 2;
-                    else if (score == 1) multiplier += 1;
-
-                    fitness += score;
-                }
-            }
-
-            individual.SuitabilityScore = fitness + 1 * multiplier;
         }
 
         public IPopulation GenerateInitialisedPopulation(int size)
@@ -76,6 +51,31 @@ namespace CS_GA.Services
             }
 
             population.MostSuitableIndividualToProblem = mostSuitableIndividual;
+        }
+
+        public void UpdateIndividualSuitability(IIndividual individual)
+        {
+            var fitness = 0;
+            var multiplier = 0;
+
+            for (var i = 0; i < individual.GeneLength; i++)
+            {
+                var studentIndex = individual.GetGeneValue(i) - 1;
+                if (studentIndex != -1)
+                {
+                    var timeslotIndex = i;
+
+                    var score = _studentDataService.GetStudentPreference(studentIndex, timeslotIndex);
+
+                    if (score == 10)
+                        multiplier += 2;
+                    else if (score == 1) multiplier += 1;
+
+                    fitness += score;
+                }
+            }
+
+            individual.SuitabilityScore = fitness + 1 * multiplier;
         }
     }
 }

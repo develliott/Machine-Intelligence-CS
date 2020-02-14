@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CS_GA.Business.Strategies;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IOperators;
@@ -13,17 +9,17 @@ namespace CS_GA.Business.Operators
     public class OnePointCrossoverOperator : ICrossoverOperator
     {
         private readonly IIndividualFactory _individualFactory;
-        private readonly ISelectionStrategy _selectionStrategy;
         private readonly Random _random = new Random();
+        private readonly ISelectionStrategy _selectionStrategy;
 
-        public OnePointCrossoverOperator( IIndividualFactory individualFactory, ISelectionStrategy selectionStrategy)
+        public OnePointCrossoverOperator(IIndividualFactory individualFactory, ISelectionStrategy selectionStrategy)
         {
             _individualFactory = individualFactory;
             _selectionStrategy = selectionStrategy;
         }
 
         /// <summary>
-        /// Selects two individuals from the population and performs the crossover operation on them.
+        ///     Selects two individuals from the population and performs the crossover operation on them.
         /// </summary>
         /// <param name="population">The population to select from</param>
         /// <returns></returns>
@@ -36,7 +32,7 @@ namespace CS_GA.Business.Operators
         }
 
         /// <summary>
-        /// Perform a random splice of the genes from 'parent1' and 'parent2' to produce a child.
+        ///     Perform a random splice of the genes from 'parent1' and 'parent2' to produce a child.
         /// </summary>
         /// <param name="parent1">The parent to take the first selection of genes from</param>
         /// <param name="parent2">The parent to take the second selection of genes from</param>
@@ -67,7 +63,5 @@ namespace CS_GA.Business.Operators
 
             return child;
         }
-
-
     }
 }

@@ -1,18 +1,14 @@
 ﻿using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IServices;
-using CS_GA.Services;
 
 namespace CS_GA.Business.Data_Structure
 {
     public class Population : IPopulation
     {
-        public IIndividual MostSuitableIndividualToProblem { get; set; }
-        private IIndividual[] Individuals { get; }
-        public int Size { get; }
+        private readonly IEvolutionService _evolutionService;
 
         private readonly IIndividualFactory _individualFactory;
-        private readonly IEvolutionService _evolutionService;
 
         public Population(int size, IIndividualFactory individualFactory, IEvolutionService evolutionService)
         {
@@ -22,6 +18,10 @@ namespace CS_GA.Business.Data_Structure
 
             Individuals = new IIndividual[Size];
         }
+
+        private IIndividual[] Individuals { get; }
+        public IIndividual MostSuitableIndividualToProblem { get; set; }
+        public int Size { get; }
 
         public void InitialisePopulation()
         {

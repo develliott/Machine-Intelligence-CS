@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using CS_GA.Business.Operators;
 using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IOperators;
@@ -11,18 +9,19 @@ namespace CS_GA.Services
 {
     public class EvolutionService : IEvolutionService
     {
+        private readonly ICrossoverOperator _crossoverOperator;
         private readonly bool _elitism = true;
-        private readonly IProblemDomain _problemDomain;
+        private readonly IMutationOperator _mutationOperator;
         private readonly IPopulationFactory _populationFactory;
+        private readonly IProblemDomain _problemDomain;
 
         private readonly Random _random = new Random();
         private readonly IStudentDataService<int> _studentDataService;
 
-        private readonly ICrossoverOperator _crossoverOperator;
-        private readonly IMutationOperator _mutationOperator;
 
-
-        public EvolutionService(IProblemDomain problemDomain, IPopulationFactory populationFactory, IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator, IMutationOperator mutationOperator)
+        public EvolutionService(IProblemDomain problemDomain, IPopulationFactory populationFactory,
+            IStudentDataService<int> studentDataService, ICrossoverOperator crossoverOperator,
+            IMutationOperator mutationOperator)
         {
             _problemDomain = problemDomain;
             _populationFactory = populationFactory;

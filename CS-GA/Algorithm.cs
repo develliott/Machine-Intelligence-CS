@@ -1,6 +1,5 @@
 ﻿using System;
 using CS_GA.Common.IServices;
-using CS_GA.Services;
 
 namespace CS_GA
 {

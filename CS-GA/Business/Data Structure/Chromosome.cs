@@ -7,7 +7,6 @@ namespace CS_GA.Business.Data_Structure
 {
     public class Chromosome : IChromosome
     {
-        public int Size { get; }
         private readonly int[] _genes;
         private readonly Random _random = new Random();
 
@@ -16,6 +15,8 @@ namespace CS_GA.Business.Data_Structure
             Size = size;
             _genes = new int[size];
         }
+
+        public int Size { get; }
 
 
         public void SetGeneValue(int geneIndex, int value)
@@ -42,11 +43,6 @@ namespace CS_GA.Business.Data_Structure
             return genes;
         }
 
-        public bool GeneValueAlreadyAssigned(int geneValue)
-        {
-            return _genes.ToList().Exists(gene => gene.Equals(geneValue));
-        }
-
         public void SetRandomUnassignedAllele(int unassignedIdentifier, int alleleToReplaceWith)
         {
             // Find the index of every unassigned allele in the genes.
@@ -56,6 +52,11 @@ namespace CS_GA.Business.Data_Structure
 
             var randomIndex = _random.Next(indicesOfUnassignedAlleles.Count);
             SetGeneValue(indicesOfUnassignedAlleles[randomIndex], alleleToReplaceWith);
+        }
+
+        public bool GeneValueAlreadyAssigned(int geneValue)
+        {
+            return _genes.ToList().Exists(gene => gene.Equals(geneValue));
         }
     }
 }

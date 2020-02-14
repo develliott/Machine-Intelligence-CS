@@ -29,6 +29,11 @@ namespace CS_GA.Services
 
         public Type TypeOfData { get; }
 
+        public T GetStudentPreference(int studentIndex, int timeSlotIndex)
+        {
+            return _studentPreference[studentIndex, timeSlotIndex];
+        }
+
 
         private int ConvertStringDataToPreferenceScore(string data)
         {
@@ -66,11 +71,6 @@ namespace CS_GA.Services
             return Enumerable.Range(0, _studentPreference.GetLength(1))
                 .Select(x => _studentPreference[studentIndex, x])
                 .ToArray();
-        }
-
-        public T GetStudentPreference(int studentIndex, int timeSlotIndex)
-        {
-            return _studentPreference[studentIndex, timeSlotIndex];
         }
     }
 }

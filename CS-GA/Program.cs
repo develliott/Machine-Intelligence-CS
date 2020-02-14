@@ -1,7 +1,6 @@
 ﻿using System;
 using CS_GA.Ninject;
 using Ninject;
-using Ninject.Parameters;
 
 namespace CS_GA
 {

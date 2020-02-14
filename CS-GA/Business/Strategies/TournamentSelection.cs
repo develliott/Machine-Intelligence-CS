@@ -3,18 +3,18 @@ using CS_GA.Common.IData_Structure;
 using CS_GA.Common.IFactories;
 using CS_GA.Common.IServices;
 using CS_GA.Common.IStrategies;
-using CS_GA.Services;
 
 namespace CS_GA.Business.Strategies
 {
     public class TournamentSelection : ISelectionStrategy
     {
-        // TODO: Make this dynamic for the consumer
-        private int tournamentSize = 10;
-
         private readonly IEnvironmentService _environmentService;
         private readonly IPopulationFactory _populationFactory;
+
         private readonly Random _random = new Random();
+
+        // TODO: Make this dynamic for the consumer
+        private readonly int tournamentSize = 10;
 
         public TournamentSelection(IEnvironmentService environmentService, IPopulationFactory populationFactory)
         {
@@ -23,7 +23,7 @@ namespace CS_GA.Business.Strategies
         }
 
         /// <summary>
-        /// Finds the individual with the highest suitability from a random population sample.
+        ///     Finds the individual with the highest suitability from a random population sample.
         /// </summary>
         /// <param name="population">The population to select from</param>
         /// <returns>The most suitable individual from the population sample</returns>
