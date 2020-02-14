@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CS_GA.Common.IData_Structure;
 
 namespace CS_GA.Services.ProblemServices

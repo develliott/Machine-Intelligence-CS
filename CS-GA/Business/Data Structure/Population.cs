@@ -6,7 +6,6 @@ namespace CS_GA.Business.Data_Structure
 {
     public class Population : IPopulation
     {
-
         private readonly IIndividualFactory _individualFactory;
         private readonly IProblemService _problemService;
 
