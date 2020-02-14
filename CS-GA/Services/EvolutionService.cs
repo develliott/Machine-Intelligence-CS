@@ -50,7 +50,7 @@ namespace CS_GA.Services
             {
                 // TODO: Refactor the 'currentIndividual.Chromosome' - shouldn't be able to view Chromosome.
                 var currentIndividual = newPopulation.GetIndividual(individualIndex);
-                _mutationOperator.PerformMutation(currentIndividual.Chromosome);
+                _mutationOperator.PerformMutation(currentIndividual);
             }
 
             return newPopulation;

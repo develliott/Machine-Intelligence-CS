@@ -9,7 +9,7 @@ namespace CS_GA.Business.Operators
         private readonly int _maxNumberOfMutations = 7;
         private readonly Random _random = new Random();
 
-        public IChromosome PerformMutation(IChromosome chromosome)
+        public IIndividual PerformMutation(IIndividual individual)
         {
             var randomMutationLimit = _random.Next(_maxNumberOfMutations);
 
@@ -18,22 +18,22 @@ namespace CS_GA.Business.Operators
                 // TODO: Implement infinity searching with boundary constraints
 
                 // Find two indices at random.
-                var swapIndex1 = _random.Next(chromosome.Size);
-                var swapIndex2 = _random.Next(chromosome.Size);
+                var swapIndex1 = _random.Next(individual.Chromosome.Size);
+                var swapIndex2 = _random.Next(individual.Chromosome.Size);
 
                 // Ensure indices are unique.
-                while (swapIndex1 == swapIndex2) swapIndex2 = _random.Next(chromosome.Size);
+                while (swapIndex1 == swapIndex2) swapIndex2 = _random.Next(individual.Chromosome.Size);
 
                 // Store the original values.
-                var swapIndex1Value = chromosome.GetGeneValue(swapIndex1);
-                var swapIndex2Value = chromosome.GetGeneValue(swapIndex2);
+                var swapIndex1Value = individual.GetGeneValue(swapIndex1);
+                var swapIndex2Value = individual.GetGeneValue(swapIndex2);
 
                 // Swap the index's values.
-                chromosome.SetGeneValue(swapIndex1, swapIndex2Value);
-                chromosome.SetGeneValue(swapIndex2, swapIndex1Value);
+                individual.SetGeneValue(swapIndex1, swapIndex2Value);
+                individual.SetGeneValue(swapIndex2, swapIndex1Value);
             }
 
-            return chromosome;
+            return individual;
         }
     }
 }

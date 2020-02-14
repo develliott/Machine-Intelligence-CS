@@ -4,6 +4,6 @@ namespace CS_GA.Common.IOperators
 {
     public interface IMutationOperator
     {
-        IChromosome PerformMutation(IChromosome chromosome);
+        IIndividual PerformMutation(IIndividual individual);
     }
 }
